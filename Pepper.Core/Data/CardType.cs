@@ -1,4 +1,4 @@
-namespace pepper.core;
+namespace Pepper.Core.Data;
 
 public enum CardType
 {

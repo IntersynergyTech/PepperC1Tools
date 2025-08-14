@@ -1,4 +1,4 @@
-namespace pepper.core.Control.Subcommands;
+namespace Pepper.Core.Control.Subcommands;
 
 public enum PollingConfigCommands
 {

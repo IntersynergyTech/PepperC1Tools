@@ -1,4 +1,4 @@
-namespace pepper.core.Control.Subcommands.NetworkConfig;
+namespace Pepper.Core.Control.Subcommands.NetworkConfig;
 
 public enum WifiMode
 {

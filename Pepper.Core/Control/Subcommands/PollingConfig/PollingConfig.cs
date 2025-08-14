@@ -1,4 +1,4 @@
-namespace pepper.core.Control.Subcommands.PollingConfig;
+namespace Pepper.Core.Control.Subcommands.PollingConfig;
 
 public enum SupportedCardTypes
 {

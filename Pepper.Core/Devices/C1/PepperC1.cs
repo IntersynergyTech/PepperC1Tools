@@ -1,6 +1,7 @@
-using pepper.core.Control.Subcommands;
+using Pepper.Core.Control.Subcommands;
+using Pepper.Core.Data;
 
-namespace pepper.core;
+namespace Pepper.Core.Devices.C1;
 
 //doc: https://eccel.co.uk/wp-content/downloads/Pepper_C1/C1_software_manual.pdf
 

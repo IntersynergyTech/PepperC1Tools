@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper-c1-tool", "pepper-c1-tool\pepper-c1-tool.csproj", "{B2208367-BFAA-4C27-86AF-708C867D7928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper.core", "pepper.core\pepper.core.csproj", "{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Core", "Pepper.Core\Pepper.Core.csproj", "{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

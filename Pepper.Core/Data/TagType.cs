@@ -1,5 +1,5 @@
 // ReSharper disable InconsistentNaming
-namespace pepper.core;
+namespace Pepper.Core.Data;
 
 public enum TagType
 {

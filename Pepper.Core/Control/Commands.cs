@@ -1,4 +1,4 @@
-namespace pepper.core.Control;
+namespace Pepper.Core.Control;
 
 public enum Commands
 {
