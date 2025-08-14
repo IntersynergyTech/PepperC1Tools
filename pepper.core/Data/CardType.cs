@@ -1,0 +1,7 @@
+namespace pepper.core;
+
+public enum CardType
+{
+    Iso14443A = 0x00,
+    Iso15693 = 0x10
+}

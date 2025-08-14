@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper-c1-tool", "pepper-c1-tool\pepper-c1-tool.csproj", "{B2208367-BFAA-4C27-86AF-708C867D7928}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper.core", "pepper.core\pepper.core.csproj", "{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B2208367-BFAA-4C27-86AF-708C867D7928}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2208367-BFAA-4C27-86AF-708C867D7928}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2208367-BFAA-4C27-86AF-708C867D7928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
