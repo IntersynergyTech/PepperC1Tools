@@ -3,14 +3,18 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>pepper_c1_tool</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Pepper.Cards.Database\Pepper.Cards.Database.csproj" />
       <ProjectReference Include="..\Pepper.Core\Pepper.Core.csproj" />
       <ProjectReference Include="..\Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Terminal.Gui" Version="2.0.0-develop.4533" />
     </ItemGroup>
 
 </Project>

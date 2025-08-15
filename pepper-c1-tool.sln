@@ -4,6 +4,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper-c1-tool", "pepper-c1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Core", "Pepper.Core\Pepper.Core.csproj", "{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.PepDuino", "Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj", "{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Cards.Data", "Pepper.Cards.Data\Pepper.Cards.Data.csproj", "{BBC46638-1613-4C36-800B-E7104932E401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Cards.Database", "Pepper.Cards.Database\Pepper.Cards.Database.csproj", "{961946D3-9C49-441E-885B-1CC0178BF4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Cli", "Pepper.Cli\Pepper.Cli.csproj", "{3C0D46B4-52A3-45A0-9816-8204AB70CB96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +26,21 @@ Global
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBC46638-1613-4C36-800B-E7104932E401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBC46638-1613-4C36-800B-E7104932E401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBC46638-1613-4C36-800B-E7104932E401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBC46638-1613-4C36-800B-E7104932E401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961946D3-9C49-441E-885B-1CC0178BF4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961946D3-9C49-441E-885B-1CC0178BF4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961946D3-9C49-441E-885B-1CC0178BF4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961946D3-9C49-441E-885B-1CC0178BF4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

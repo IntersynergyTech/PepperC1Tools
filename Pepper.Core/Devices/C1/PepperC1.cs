@@ -7,7 +7,17 @@ namespace Pepper.Core.Devices.C1;
 
 public class PepperC1
 {
-    public IC1Port Port { get; set; }
+    public PepperC1(IC1Port port, EventHandler<Tag> tagHandler)
+    {
+        Port = port;
+        OnTagDetected = tagHandler ?? throw new ArgumentNullException(nameof(tagHandler), "Tag handler cannot be null");
+
+        port.TagDetected += tagHandler;
+    }
+    
+    public IC1Port Port { get; }
+    
+    public EventHandler<Tag> OnTagDetected { get; }
 
     public void GetTagCount()
     {
