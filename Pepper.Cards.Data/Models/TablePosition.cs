@@ -6,4 +6,5 @@ public class TablePosition
     public int? SeatNumber { get; set; }
     public bool NormallySecret { get; set; }
     public bool IsDummy { get; set; }
+    public TablePositionReader[] Readers { get; set; }
 }

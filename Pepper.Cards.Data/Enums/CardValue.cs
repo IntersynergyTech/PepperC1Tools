@@ -16,8 +16,8 @@ public enum CardValue
     Queen = 12,
     King = 13,
 
-    Joker = 14,
-    Wild = 15,
+    JokerRed = 14,
+    JokerBlack = 15,
     Unknown = 16,
 }
 
@@ -40,8 +40,8 @@ public static class CardValueExtensions
             CardValue.Jack => "Jack",
             CardValue.Queen => "Queen",
             CardValue.King => "King",
-            CardValue.Joker => "Joker",
-            CardValue.Wild => "Wild",
+            CardValue.JokerRed => "Joker",
+            CardValue.JokerBlack => "Wild",
             _ => "Unknown"
         };
     }
@@ -63,6 +63,8 @@ public static class CardValueExtensions
             CardValue.Jack => "J",
             CardValue.Queen => "Q",
             CardValue.King => "K",
+            CardValue.JokerRed => "@@",
+            CardValue.JokerBlack => "##",
             _ => "XX"
         };
     }
@@ -84,8 +86,8 @@ public static class CardValueExtensions
             CardValue.Jack => "J",
             CardValue.Queen => "Q",
             CardValue.King => "K",
-            CardValue.Joker => "X",
-            CardValue.Wild => "W",
+            CardValue.JokerRed => "@",
+            CardValue.JokerBlack => "#",
             CardValue.Unknown => "_",
             _ => value.ToDisplayString()
         };

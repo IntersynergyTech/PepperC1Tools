@@ -11,6 +11,7 @@ public class AddDeckStyleDialog : Dialog
     private CheckBox isFourColourCheckBox = new ();
     private CheckBox isDarkMode = new ();
     private CheckBox isLargePrint = new ();
+    private TextField backDesignKey = new ();
 
     private Button SaveButton = new ();
     private Button CancelButton = new ();
@@ -26,19 +27,25 @@ public class AddDeckStyleDialog : Dialog
         nameField.Y = 1;
 
         isFourColourCheckBox.Text = "Is Four Colour?";
-        isFourColourCheckBox.Y = 2;
+        isFourColourCheckBox.Y = 3;
         
         isDarkMode.Text = "Dark Mode?";
-        isDarkMode.Y = 3;
+        isDarkMode.Y = 4;
 
         isLargePrint.Text = "Large Print?";
-        isLargePrint.Y = 4;
+        isLargePrint.Y = 5;
+        
+        backDesignKey.Caption = "Back Design Key";
+        backDesignKey.Width = Dim.Fill();
+        backDesignKey.Y = 7;
 
         Add(nameField);
         Add(isFourColourCheckBox);
         Add(isDarkMode);
         Add(isLargePrint);
+        Add(backDesignKey);
 
+        SaveButton.Y = 9;
         SaveButton.Text = "Save";
         SaveButton.Accepting += SaveButtonOnAccepting;
 
@@ -57,6 +64,7 @@ public class AddDeckStyleDialog : Dialog
             IsFourColour = isFourColourCheckBox.CheckedState == CheckState.Checked,
             DarkMode = isDarkMode.CheckedState == CheckState.Checked,
             LargePrint = isLargePrint.CheckedState == CheckState.Checked,
+            BackDesignKey= backDesignKey.Text
         };
 
         Program.CardsDbContext.DeckStyles.Add(newDeck);

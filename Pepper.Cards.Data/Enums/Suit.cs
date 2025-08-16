@@ -31,7 +31,7 @@ public static class SuitExtensions
             Suit.Diamonds => "D",
             Suit.Clubs => "C",
             Suit.Spades => "S",
-            _ => "U"
+            _ => "_"
         };
     }
     

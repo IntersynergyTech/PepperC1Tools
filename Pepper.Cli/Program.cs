@@ -51,7 +51,11 @@ class Program
             antennaIds: [0, 1, 2, 3, 4, 5, 6, 7]
         );
 
-        var multiReader = new MultiplexReader(pepduino, dummyReader1, dummyReader2);
+        var multiReader = new MultiplexReader(
+            pepduino
+            , dummyReader1
+            , dummyReader2
+        );
         multiReader.TagDetected += TagDetectedProxy;
 
         Console.WriteLine("Starting Readers...");

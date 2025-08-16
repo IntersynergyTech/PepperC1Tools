@@ -31,6 +31,30 @@ public class CardsDbContext : DbContext
             .HasAnnotation("Sqlite:Autoincrement", true);
 
         modelBuilder.Entity<Card>().HasOne(c => c.DeckStyle);
+
+        modelBuilder.Entity<TablePosition>().HasKey(c => c.Id);
+
+        modelBuilder.Entity<TablePosition>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd()
+            .HasAnnotation("Sqlite:Autoincrement", true);
+
+        modelBuilder.Entity<TablePosition>()
+            .HasMany<TablePositionReader>(c => c.Readers)
+            .WithOne(r => r.TablePosition)
+            .HasForeignKey(r => r.TablePositionId);
+
+        modelBuilder.Entity<TablePositionReader>().HasKey(r => r.Id);
+
+        modelBuilder.Entity<TablePositionReader>()
+            .Property(r => r.Id)
+            .ValueGeneratedOnAdd()
+            .HasAnnotation("Sqlite:Autoincrement", true);
+
+        modelBuilder.Entity<TablePositionReader>()
+            .HasOne(r => r.TablePosition)
+            .WithMany(t => t.Readers)
+            .HasForeignKey(r => r.TablePositionId);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
