@@ -1,10 +1,11 @@
-namespace Pepper.Cards.Data.Models;
+namespace Pepper.Cards.Data.DbModels;
 
 public class TablePosition
 {
     public int Id { get; set; }
     public int? SeatNumber { get; set; }
     public bool NormallySecret { get; set; }
-    public bool IsDummy { get; set; }
-    public TablePositionReader[] Readers { get; set; }
+
+    public string Description { get; set; }
+    public ICollection<TablePositionReader> Readers { get; set; }
 }

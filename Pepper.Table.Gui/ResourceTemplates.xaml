@@ -1,0 +1,158 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Pepper.Table.Gui.Converters"
+    xmlns:data="clr-namespace:Pepper.Cards.Data;assembly=Pepper.Cards.Data"
+    xmlns:dbModels="clr-namespace:Pepper.Cards.Data.DbModels;assembly=Pepper.Cards.Data"
+    xmlns:enums="clr-namespace:Pepper.Cards.Data.Enums;assembly=Pepper.Cards.Data"
+    x:Name="TemplatesDictionary">
+    <converters:SuitAwareForegroundConverter x:Key="SuitForegroundConverter" />
+    <converters:CardCornerValueConverter x:Key="CornerValueConverter" />
+
+
+    <DataTemplate x:Key="FullCardTemplate" DataType="{x:Type dbModels:Card}">
+        <Border
+            Width="160"
+            Height="240"
+            Margin="2"
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="12">
+            <Grid
+                x:Name="CardGrid"
+                HorizontalAlignment="Stretch"
+                DataContext="{Binding}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Suit}" Value="{x:Static enums:Suit.Clubs}" />
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="Black"
+                    BorderThickness="1" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Margin="0,8"
+                    Padding="0"
+                    VerticalAlignment="Top"
+                    FontFamily="Tahoma"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{Binding Converter={StaticResource SuitForegroundConverter}}"
+                    LineHeight="24"
+                    LineStackingStrategy="BlockLineHeight"
+                    Text="{Binding Converter={StaticResource CornerValueConverter}}"
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Margin="0,8"
+                    Padding="0"
+                    VerticalAlignment="Top"
+                    FontFamily="Tahoma"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{Binding Converter={StaticResource SuitForegroundConverter}}"
+                    LineHeight="24"
+                    LineStackingStrategy="BlockLineHeight"
+                    Text="{Binding Converter={StaticResource CornerValueConverter}}"
+                    TextAlignment="Center" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Margin="0,8"
+                    Padding="0"
+                    VerticalAlignment="Bottom"
+                    FontFamily="Tahoma"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{Binding Converter={StaticResource SuitForegroundConverter}}"
+                    LineHeight="24"
+                    LineStackingStrategy="BlockLineHeight"
+                    RenderTransformOrigin="0.5,0.5"
+                    Text="{Binding Converter={StaticResource CornerValueConverter}}"
+                    TextAlignment="Center">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform Angle="180" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Margin="0,8"
+                    Padding="0"
+                    VerticalAlignment="Bottom"
+                    FontFamily="Tahoma"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Foreground="{Binding Converter={StaticResource SuitForegroundConverter}}"
+                    LineHeight="24"
+                    LineStackingStrategy="BlockLineHeight"
+                    RenderTransformOrigin="0.5,0.5"
+                    Text="{Binding Converter={StaticResource CornerValueConverter}}"
+                    TextAlignment="Center">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform Angle="180" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+            </Grid>
+        </Border>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="MiniCardTemplate" DataType="{x:Type dbModels:Card}">
+        <Border
+            Width="80"
+            Height="120"
+            Margin="2"
+            Background="White"
+            BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="12">
+            <Grid>
+                <TextBlock
+                    Margin="0,16,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    FontFamily="Tahoma"
+                    FontSize="40"
+                    FontWeight="Bold"
+                    Foreground="{Binding Converter={StaticResource SuitForegroundConverter}}"
+                    LineHeight="40"
+                    LineStackingStrategy="BlockLineHeight"
+                    Text="{Binding Converter={StaticResource CornerValueConverter}}"
+                    TextAlignment="Center" />
+                <TextBlock
+                    VerticalAlignment="Bottom"
+                    FontSize="8"
+                    Text="{Binding DeckStyle.Name}"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>

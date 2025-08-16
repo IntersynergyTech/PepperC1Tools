@@ -1,4 +1,4 @@
-namespace Pepper.Cards.Data.Models;
+namespace Pepper.Cards.Data.DbModels;
 
 public class DeckStyle
 {

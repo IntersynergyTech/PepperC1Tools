@@ -1,5 +1,5 @@
 ﻿using System.Timers;
-using Pepper.Cards.Data.Models;
+using Pepper.Cards.Data.DbModels;
 using Pepper.Core.Data;
 using Pepper.Core.Devices;
 using Timer = System.Timers.Timer;

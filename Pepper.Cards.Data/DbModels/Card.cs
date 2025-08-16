@@ -1,6 +1,6 @@
 using Pepper.Cards.Data.Enums;
 
-namespace Pepper.Cards.Data.Models;
+namespace Pepper.Cards.Data.DbModels;
 
 public class Card
 {

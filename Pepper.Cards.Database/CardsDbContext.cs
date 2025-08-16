@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pepper.Cards.Data.Models;
+using Pepper.Cards.Data.DbModels;
 
 namespace Pepper.Cards.Database;
 
@@ -11,6 +11,8 @@ public class CardsDbContext : DbContext
 
     public DbSet<DeckStyle> DeckStyles { get; set; }
     public DbSet<Card> Cards { get; set; }
+    public DbSet<TablePosition> TablePositions { get; set; }
+    public DbSet<TablePositionReader> TablePositionReaders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

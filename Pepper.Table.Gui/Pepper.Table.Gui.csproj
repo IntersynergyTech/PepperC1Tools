@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Pepper.Cards.Database\Pepper.Cards.Database.csproj" />
+      <ProjectReference Include="..\Pepper.Core\Pepper.Core.csproj" />
+      <ProjectReference Include="..\Pepper.Device.Dummy\Pepper.Device.Dummy.csproj" />
+      <ProjectReference Include="..\Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj" />
+    </ItemGroup>
+
+</Project>

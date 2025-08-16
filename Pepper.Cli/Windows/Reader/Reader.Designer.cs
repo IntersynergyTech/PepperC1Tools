@@ -267,6 +267,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.tagSpecLabel.Data = "tagSpecLabel";
             this.tagSpecLabel.Text = "--";
             this.tagSpecLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
+            this.Add(this.tagSpecLabel);
             this.label9.Width = Dim.Auto();
             this.label9.Height = Dim.Auto();
             this.label9.X = 36;

@@ -1,4 +1,4 @@
-using Pepper.Cards.Data.Models;
+using Pepper.Cards.Data.DbModels;
 using Terminal.Gui.Input;
 using Terminal.Gui.ViewBase;
 using Terminal.Gui.Views;

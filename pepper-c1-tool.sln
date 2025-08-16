@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.C1", "Pepper.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.Dummy", "Pepper.Device.Dummy\Pepper.Device.Dummy.csproj", "{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Table.Gui", "Pepper.Table.Gui\Pepper.Table.Gui.csproj", "{6CEC9E48-70E2-4D76-A95B-261AAE308BA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CEC9E48-70E2-4D76-A95B-261AAE308BA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CEC9E48-70E2-4D76-A95B-261AAE308BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CEC9E48-70E2-4D76-A95B-261AAE308BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CEC9E48-70E2-4D76-A95B-261AAE308BA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

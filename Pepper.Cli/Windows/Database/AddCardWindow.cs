@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
+using Pepper.Cards.Data.DbModels;
 using Pepper.Cards.Data.Enums;
-using Pepper.Cards.Data.Models;
 using Pepper.Core.Data;
 using Terminal.Gui.App;
 using Terminal.Gui.Drawing;

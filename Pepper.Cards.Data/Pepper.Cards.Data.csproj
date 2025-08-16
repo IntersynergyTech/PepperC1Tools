@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Pepper.Core\Pepper.Core.csproj" />
+    </ItemGroup>
+
 </Project>

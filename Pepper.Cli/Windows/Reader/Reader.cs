@@ -9,8 +9,8 @@
 
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
+using Pepper.Cards.Data.DbModels;
 using Pepper.Cards.Data.Enums;
-using Pepper.Cards.Data.Models;
 using Pepper.Core.Data;
 
 namespace Pepper.Cli.Windows.Reader;
