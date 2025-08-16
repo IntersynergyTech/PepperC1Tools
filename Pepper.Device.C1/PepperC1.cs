@@ -1,23 +1,33 @@
 using Pepper.Core.Control.Subcommands;
 using Pepper.Core.Data;
+using Pepper.Device.C1;
 
 namespace Pepper.Core.Devices.C1;
 
 //doc: https://eccel.co.uk/wp-content/downloads/Pepper_C1/C1_software_manual.pdf
 
-public class PepperC1
+public class PepperC1 : ITagReader
 {
-    public PepperC1(IC1Port port, EventHandler<Tag> tagHandler)
+    public PepperC1(IC1Port port, int readerId)
     {
         Port = port;
-        OnTagDetected = tagHandler ?? throw new ArgumentNullException(nameof(tagHandler), "Tag handler cannot be null");
-
-        port.TagDetected += tagHandler;
     }
-    
+
     public IC1Port Port { get; }
-    
-    public EventHandler<Tag> OnTagDetected { get; }
+
+    public void StartReading()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void StopReading()
+    {
+        throw new NotImplementedException();
+    }
+
+    public int ReaderId { get; set; }
+
+    public EventHandler<Tag> TagDetected { get; set; }
 
     public void GetTagCount()
     {
@@ -72,7 +82,11 @@ public class PepperC1
     /// <param name="keyType">Key type. Different key types have different byte length requirements.</param>
     /// <param name="keyBytes">The key value. Length depends on the specified <see cref="keyType"/></param>
     /// <exception cref="NotImplementedException"></exception>
-    public void SetKey(uint keyNumber, SetKeyTypes keyType, byte[] keyBytes)
+    public void SetKey(
+        uint keyNumber,
+        SetKeyTypes keyType,
+        byte[] keyBytes
+    )
     {
         //SetKey
         throw new NotImplementedException();
@@ -120,7 +134,7 @@ public class PepperC1
         //SLeep
         throw new NotImplementedException();
     }
-    
+
     // not even bothering with GPIO command as we are definitely not using it and the sig is too much effort.
 
     /// <summary>
@@ -178,11 +192,10 @@ public class PepperC1
     {
         //WpanData
         throw new NotImplementedException();
-        
     }
-    
+
     //Todo Breakouts:
     //Protcol settings (including protocol auth)
     // - includind children, ie wifi, wtc.
     //Polling settings
-}   
+}

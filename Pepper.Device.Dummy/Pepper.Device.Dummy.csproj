@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>pepper_c1_tool</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Pepper.Cards.Data\Pepper.Cards.Data.csproj" />
       <ProjectReference Include="..\Pepper.Core\Pepper.Core.csproj" />
-      <ProjectReference Include="..\Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj" />
     </ItemGroup>
 
 </Project>

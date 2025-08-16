@@ -10,6 +10,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Pepper.Cards.Database\Pepper.Cards.Database.csproj" />
       <ProjectReference Include="..\Pepper.Core\Pepper.Core.csproj" />
+      <ProjectReference Include="..\Pepper.Device.C1\Pepper.Device.C1.csproj" />
+      <ProjectReference Include="..\Pepper.Device.Dummy\Pepper.Device.Dummy.csproj" />
       <ProjectReference Include="..\Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj" />
     </ItemGroup>
 

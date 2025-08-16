@@ -32,17 +32,18 @@ public partial class Reader
         ResetView();
     }
 
-    private void TagDetected(object? sender, Tag e)
+    private void TagDetected(object? sender, DetectedTag e)
     {
         uidLabel.Text = BitConverter.ToString(e.TagId);
         tagTypeLabel.Text = e.TagType.ToString();
         tagSpecLabel.Text = e.CardType.ToString();
+        tagReaderLabel.Text = $"{e.ReaderId}x{e.AntennaId}";
         
         var lookup = Program.CardsDbContext.Cards.Include(c => c.DeckStyle).SingleOrDefault(c => c.TagUid == e.TagId);
      
         if (lookup != null)
         {
-            LoadTag(lookup);
+            LoadTag(lookup, e);
         }
         else
         {
@@ -62,7 +63,7 @@ public partial class Reader
         cardBottomRightLabel.Text = string.Empty;
     }
 
-    private void LoadTag(Card card)
+    private void LoadTag(Card card, DetectedTag tag)
     {
         SetCardView(card.Value, card.Suit, card.DeckStyle.IsFourColour);
 
@@ -71,7 +72,7 @@ public partial class Reader
         deckLabel.Text = card.DeckStyle.Name;
 
         var logId = BitConverter.ToString(card.TagUid).Replace("-", string.Empty);
-        _readHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {logId.PadLeft(20)}  {card.Value.ToShortDisplayString()}{card.Suit.ToShortDisplayString()} ({card.DeckStyle.ToString()}) - {card.Value} {card.Suit})");
+        _readHistory.Insert(0, $"[{DateTime.Now:HH:mm:ss}-{tag.ReaderId}x{tag.AntennaId}] {logId.PadLeft(20)}  {card.Value.ToShortDisplayString()}{card.Suit.ToShortDisplayString()} ({card.DeckStyle.ToString()}) - {card.Value} {card.Suit})");
     }
     
     private void SetCardView(

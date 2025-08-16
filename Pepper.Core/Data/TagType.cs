@@ -1,6 +1,7 @@
 // ReSharper disable InconsistentNaming
 namespace Pepper.Core.Data;
 
+// These tags are based on the Pepper C1 docs, if any other readers are added then they will have to map them across.
 public enum TagType
 {
     MifareUltralight = 0x01,
@@ -32,4 +33,6 @@ public enum TagType
 
     WpanLEDeviceUid = 0x42,
     WpanLePin = 0x50,
+    
+    DummyTag = 0xFF
 }

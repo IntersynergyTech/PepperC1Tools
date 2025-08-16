@@ -1,13 +1,13 @@
 ﻿using System.IO.Ports;
 using Pepper.Core.Data;
-using Pepper.Core.Devices.C1;
+using Pepper.Core.Devices;
 
 namespace Pepper.Device.PepDuino;
 
-public class PepDuino : IC1Port
+public class PepDuino : ITagReader
 {
     private readonly string _serialPortName;
-    private Thread _ctorThread;
+
     private Thread _portThread;
     private CancellationTokenSource _cts;
     private readonly byte[] _readBuffer = new byte[256];
@@ -17,11 +17,14 @@ public class PepDuino : IC1Port
 
     private readonly SerialPort _serialPort;
 
-    public PepDuino(string portName, int baudRate = 9600)
+    public PepDuino(
+        int readerId,
+        string portName,
+        int baudRate = 9600
+    )
     {
         _serialPortName = portName;
-        _ctorThread = Thread.CurrentThread;
-
+        ReaderId = readerId;
         _serialPort = new SerialPort(_serialPortName, baudRate);
     }
 
@@ -148,10 +151,22 @@ public class PepDuino : IC1Port
 
     private void GenerateTagEvent(byte[] bytes)
     {
-        var newTag = new Tag(CardType.Iso14443A, TagType.MifareClassic, bytes);
+        var newTag = new Tag(CardType.Iso14443A, TagType.MifareClassic, bytes, 0);
 
         TagDetected?.Invoke(this, newTag);
     }
+
+    public void StartReading()
+    {
+        Connect();
+    }
+
+    public void StopReading()
+    {
+        Disconnect();
+    }
+
+    public int ReaderId { get; }
 
     public EventHandler<Tag> TagDetected { get; set; }
 }

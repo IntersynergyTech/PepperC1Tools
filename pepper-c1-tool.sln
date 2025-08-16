@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pepper-c1-tool", "pepper-c1-tool\pepper-c1-tool.csproj", "{B2208367-BFAA-4C27-86AF-708C867D7928}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Core", "Pepper.Core\Pepper.Core.csproj", "{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.PepDuino", "Pepper.Device.PepDuino\Pepper.Device.PepDuino.csproj", "{9F4E43D3-5F9C-4FC5-9F74-B09395AF771B}"
@@ -12,16 +10,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Cards.Database", "Pe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Cli", "Pepper.Cli\Pepper.Cli.csproj", "{3C0D46B4-52A3-45A0-9816-8204AB70CB96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.C1", "Pepper.Device.C1\Pepper.Device.C1.csproj", "{D3F26B5B-7DC2-4A8B-A25B-C7E2B78DC9F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pepper.Device.Dummy", "Pepper.Device.Dummy\Pepper.Device.Dummy.csproj", "{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B2208367-BFAA-4C27-86AF-708C867D7928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2208367-BFAA-4C27-86AF-708C867D7928}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2208367-BFAA-4C27-86AF-708C867D7928}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2208367-BFAA-4C27-86AF-708C867D7928}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E28BA6-FD6E-4C5E-AE94-ED7F072C9AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -42,5 +40,13 @@ Global
 		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C0D46B4-52A3-45A0-9816-8204AB70CB96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F26B5B-7DC2-4A8B-A25B-C7E2B78DC9F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F26B5B-7DC2-4A8B-A25B-C7E2B78DC9F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F26B5B-7DC2-4A8B-A25B-C7E2B78DC9F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F26B5B-7DC2-4A8B-A25B-C7E2B78DC9F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D630CB3-A9F7-4D18-89DF-B242916EFB7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -66,6 +66,10 @@ namespace Pepper.Cli.Windows.Reader {
         
         private Terminal.Gui.Views.Label deckLabel;
         
+        private Terminal.Gui.Views.Label label9;
+        
+        private Terminal.Gui.Views.Label tagReaderLabel;
+        
         private Terminal.Gui.Views.ListView readHistoryList;
         
         private Terminal.Gui.Views.Label readHistoryLabel;
@@ -94,6 +98,8 @@ namespace Pepper.Cli.Windows.Reader {
             this.cardFrame = new Terminal.Gui.Views.FrameView();
             this.readHistoryList = new Terminal.Gui.Views.ListView();
             this.readHistoryLabel = new Terminal.Gui.Views.Label();
+            this.label9 = new Terminal.Gui.Views.Label();
+            this.tagReaderLabel = new Terminal.Gui.Views.Label();
             this.Width = Dim.Fill(0);
             this.Height = Dim.Fill(0);
             this.X = 0;
@@ -211,7 +217,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.uidLabel.CanFocus = false;
             this.uidLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.uidLabel.Data = "uidLabel";
-            this.uidLabel.Text = "Heya";
+            this.uidLabel.Text = "--";
             this.uidLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
             this.Add(this.uidLabel);
             this.label3.Width = Dim.Auto();
@@ -235,7 +241,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.tagTypeLabel.CanFocus = false;
             this.tagTypeLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.tagTypeLabel.Data = "tagTypeLabel";
-            this.tagTypeLabel.Text = "Heya";
+            this.tagTypeLabel.Text = "--";
             this.tagTypeLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
             this.Add(this.tagTypeLabel);
             this.label4.Width = Dim.Auto();
@@ -259,13 +265,36 @@ namespace Pepper.Cli.Windows.Reader {
             this.tagSpecLabel.CanFocus = false;
             this.tagSpecLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.tagSpecLabel.Data = "tagSpecLabel";
-            this.tagSpecLabel.Text = "Heya";
+            this.tagSpecLabel.Text = "--";
             this.tagSpecLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
-            this.Add(this.tagSpecLabel);
+            this.label9.Width = Dim.Auto();
+            this.label9.Height = Dim.Auto();
+            this.label9.X = 36;
+            this.label9.Y = 12;
+            this.label9.Visible = true;
+            this.label9.Arrangement = Terminal.Gui.ViewBase.ViewArrangement.Fixed;
+            this.label9.CanFocus = false;
+            this.label9.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
+            this.label9.Data = "label9";
+            this.label9.Text = "Reader:";
+            this.label9.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
+            this.Add(this.label9);
+            this.tagReaderLabel.Width = Dim.Auto();
+            this.tagReaderLabel.Height = Dim.Auto();
+            this.tagReaderLabel.X = 48;
+            this.tagReaderLabel.Y = 12;
+            this.tagReaderLabel.Visible = true;
+            this.tagReaderLabel.Arrangement = Terminal.Gui.ViewBase.ViewArrangement.Fixed;
+            this.tagReaderLabel.CanFocus = false;
+            this.tagReaderLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
+            this.tagReaderLabel.Data = "tagReaderLabel";
+            this.tagReaderLabel.Text = "--";
+            this.tagReaderLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
+            this.Add(this.tagReaderLabel);
             this.line.Width = 28;
             this.line.Height = 1;
             this.line.X = 33;
-            this.line.Y = 12;
+            this.line.Y = 13;
             this.line.Visible = true;
             this.line.Arrangement = Terminal.Gui.ViewBase.ViewArrangement.Fixed;
             this.line.CanFocus = false;
@@ -307,7 +336,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.cardValueLabel.CanFocus = false;
             this.cardValueLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.cardValueLabel.Data = "cardValueLabel";
-            this.cardValueLabel.Text = "Heya";
+            this.cardValueLabel.Text = "--";
             this.cardValueLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
             this.Add(this.cardValueLabel);
             this.label7.Width = Dim.Auto();
@@ -331,7 +360,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.suitLabel.CanFocus = false;
             this.suitLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.suitLabel.Data = "suitLabel";
-            this.suitLabel.Text = "Heya";
+            this.suitLabel.Text = "--";
             this.suitLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
             this.Add(this.suitLabel);
             this.label8.Width = Dim.Auto();
@@ -355,7 +384,7 @@ namespace Pepper.Cli.Windows.Reader {
             this.deckLabel.CanFocus = false;
             this.deckLabel.ShadowStyle = Terminal.Gui.ViewBase.ShadowStyle.None;
             this.deckLabel.Data = "deckLabel";
-            this.deckLabel.Text = "Heya";
+            this.deckLabel.Text = "--";
             this.deckLabel.TextAlignment = Terminal.Gui.ViewBase.Alignment.Start;
             this.Add(this.deckLabel);
             this.readHistoryLabel.Width = Dim.Auto();
