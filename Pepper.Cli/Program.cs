@@ -27,16 +27,17 @@ class Program
         Console.WriteLine("Database is ready!");
 
         Console.WriteLine("Getting reader");
-        var pepduino = new Pepper.Device.PepDuino.PepDuino("COM3");
+        var pepduino = new Device.PepDuino.PepDuino("COM3");
         PepperC1 = new PepperC1(pepduino, TagDetectedProxy);
-        
+
         pepduino.Connect();
 
         Application.Run<MainMenu>();
+        pepduino.Disconnect();
     }
 
     private static void TagDetectedProxy(object? sender, Tag tag)
     {
-        TagDetected?.Invoke(sender, tag);
+        Application.Invoke(() => { TagDetected?.Invoke(sender, tag); });
     }
 }

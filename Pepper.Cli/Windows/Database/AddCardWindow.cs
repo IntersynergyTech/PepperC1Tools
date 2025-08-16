@@ -2,7 +2,9 @@ using System.Collections.ObjectModel;
 using Pepper.Cards.Data.Enums;
 using Pepper.Cards.Data.Models;
 using Pepper.Core.Data;
+using Terminal.Gui.App;
 using Terminal.Gui.Drawing;
+using Terminal.Gui.Input;
 using Terminal.Gui.ViewBase;
 using Terminal.Gui.Views;
 
@@ -13,8 +15,9 @@ public class AddCardWindow : Window
     private readonly Label _tagDisplayLabel;
     private readonly Label _resolvedCardLabel;
     private readonly ListView _deckList;
-    private readonly RadioGroup _suitRadioGroup;
-    private readonly RadioGroup _valueRadioGroup;
+    private readonly ListView _suitList;
+    private readonly ListView _valueList;
+    private readonly Button _saveButton;
 
     public Tag? DetectedTag { get; set; }
     public Card? ResolvedCard { get; set; }
@@ -22,10 +25,13 @@ public class AddCardWindow : Window
 
     public Card? NewCard { get; set; }
 
+    private ObservableCollection<Suit> _suits = new ObservableCollection<Suit>();
+    private ObservableCollection<CardValue> _values = new ObservableCollection<CardValue>();
+    
     public AddCardWindow()
     {
         Program.TagDetected += TagDetected;
-        
+
         Title = "Add Card";
         Width = Dim.Fill();
         Height = Dim.Fill();
@@ -50,7 +56,7 @@ public class AddCardWindow : Window
             X = 6,
             Y = Pos.Top(deckSelectLabel) + 1,
             Width = Dim.Fill(),
-            Height = Dim.Absolute(3),
+            Height = Dim.Absolute(5),
             BorderStyle = LineStyle.Single
         };
 
@@ -59,34 +65,95 @@ public class AddCardWindow : Window
 
         var suitLabel = new Label() { Text = "Suit:", X = 1, Y = Pos.Bottom(_deckList) + 1 };
 
-        _suitRadioGroup = new RadioGroup()
+        _suitList = new ListView()
         {
             X = 6,
             Y = Pos.Top(suitLabel) + 1,
             Width = Dim.Fill(),
-            RadioLabels = Enum.GetValues<Suit>().Select(s => s.ToString()).ToArray(),
+            Height = Dim.Absolute(6),
             BorderStyle = LineStyle.Single
         };
 
-        var valueLabel = new Label() { Text = "Value:", X = 1, Y = Pos.Bottom(_suitRadioGroup) + 1 };
+        _suits = new ObservableCollection<Suit>(Enum.GetValues<Suit>());
+        _values = new ObservableCollection<CardValue>(Enum.GetValues<CardValue>());
+        
+        _suitList.SetSource(new ObservableCollection<Suit>(_suits));
 
-        _valueRadioGroup = new RadioGroup()
+        var valueLabel = new Label() { Text = "Value:", X = 1, Y = Pos.Bottom(_suitList) + 1 };
+
+        _valueList = new ListView()
         {
             X = 6,
             Y = Pos.Top(valueLabel) + 1,
             Width = Dim.Fill(),
-            RadioLabels = Enum.GetValues<CardValue>().Select(v => v.ToString()).ToArray(),
+            Height = Dim.Absolute(15),
             BorderStyle = LineStyle.Single
         };
+
+        _valueList.SetSource(new ObservableCollection<CardValue>(_values));
+
+        _saveButton = new Button()
+        {
+            HotKey = Key.S,
+            X = Pos.Center(),
+            Y = Pos.Bottom(_valueList) + 2,
+            Text = "Save Card",
+            Width = Dim.Percent(80)
+        };
+
+        _saveButton.Accepting += SaveButtonOnAccepting;
 
         Add(
             deckSelectLabel,
             _deckList,
             suitLabel,
-            _suitRadioGroup,
+            _suitList,
             valueLabel,
-            _valueRadioGroup
+            _valueList,
+            _saveButton
         );
+        
+        Closing += (sender, args) =>
+        {
+            Program.TagDetected -= TagDetected;
+        };
+    }
+
+    private void SaveButtonOnAccepting(object? sender, CommandEventArgs e)
+    {
+        if (DetectedTag == null)
+        {
+            MessageBox.ErrorQuery("Error", "No tag detected. Please scan a card first.", "OK");
+            return;
+        }
+
+        if (SelectedDeckStyle == null)
+        {
+            MessageBox.ErrorQuery("Error", "No deck style selected. Please select a deck style.", "OK");
+            return;
+        }
+
+        if (ResolvedCard != null)
+        {
+            MessageBox.ErrorQuery("Error", "This card is already registered.", "OK");
+            return;
+        }
+        
+        var suit = (Suit) _suits[_suitList.SelectedItem];
+        var value = (CardValue) _values[_valueList.SelectedItem];
+
+        var newCard = new Card
+        {
+            TagUid = DetectedTag.TagId,
+            Value = value,
+            Suit = suit,
+            DeckStyle = SelectedDeckStyle
+        };
+
+        Program.CardsDbContext.Cards.Add(newCard);
+        Program.CardsDbContext.SaveChanges();
+
+        ResolveTag();
     }
 
     private void DeckListOnSelectedItemChanged(object? sender, ListViewItemEventArgs e)
@@ -98,9 +165,8 @@ public class AddCardWindow : Window
     {
         DetectedTag = e;
         _tagDisplayLabel.Text = e.ToString();
-        _valueRadioGroup.SetFocus();
-        _tagDisplayLabel.Draw();
-        _tagDisplayLabel.DrawText();
+        _valueList.SetFocus();
+
         ResolveTag();
     }
 
@@ -112,8 +178,17 @@ public class AddCardWindow : Window
             return;
         }
 
-        // Here you would resolve the tag to a card in your database.
-        // This is just a placeholder for demonstration purposes.
-        _resolvedCardLabel.Text = $"Resolved Card: {DetectedTag.CardType} {DetectedTag.TagType}";
+        var lookup = Program.CardsDbContext.Cards.SingleOrDefault(c => c.TagUid == DetectedTag.TagId);
+        ResolvedCard = lookup;
+
+        if (ResolvedCard != null)
+        {
+            _resolvedCardLabel.Text = ResolvedCard.ToString()!;
+            return;
+        }
+        else
+        {
+            _resolvedCardLabel.Text = "Not Registered.";
+        }
     }
 }

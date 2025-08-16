@@ -5,12 +5,13 @@ public enum Suit
     Hearts = 0,
     Diamonds = 1,
     Clubs = 2,
-    Spades = 3
+    Spades = 3,
+    NotApplicable = 4
 }
 
 public static class SuitExtensions
 {
-    public static string ToString(this Suit suit)
+    public static string ToDisplayString(this Suit suit)
     {
         return suit switch
         {
@@ -22,7 +23,7 @@ public static class SuitExtensions
         };
     }
     
-    public static string ToShortString(this Suit suit)
+    public static string ToShortDisplayString(this Suit suit)
     {
         return suit switch
         {
