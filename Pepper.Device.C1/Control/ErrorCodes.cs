@@ -1,0 +1,32 @@
+namespace Pepper.Core.Control;
+
+public enum ErrorCodes
+{
+    NoReply = 0x01,
+    WrongChecksumOrParity = 0x02,
+    CollisionDetected = 0x03,
+    BufferOverflow = 0x04,
+    InvalidFrame = 0x05,
+    RecievedResponseViolatesProtocol = 0x06,
+    AuthenticationError = 0x07,
+    RamRomReadWriteError = 0x08,
+    Overheat = 0x09,
+    RfError = 0x0A,
+    RcCommunicationError = 0x0B,
+    LengthError = 0x0C,
+    ResourceError = 0x0D,
+    TxRejected = 0x0E,
+    RxRejected = 0x0F,
+    ExternalRfError = 0x10,
+    EmvcoEmdNoiseError = 0x11,
+    HalShutdown = 0x12,
+    InvalidDataParameters = 0x20,
+    InvalidParameter = 0x21,
+    ReadingWritingParameterWouldCauseOverflow = 0x22,
+    ParameterNotSupported = 0x23,
+    CommandNotSupported = 0x24,
+    ConditionOfUseNotSatisfied = 0x25,
+    KeyErrorOccurred = 0x26,
+    InternalError = 0x7f,
+    ProtocolAuthError = 0xF0,
+}
