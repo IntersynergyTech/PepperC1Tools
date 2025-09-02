@@ -29,6 +29,17 @@ public class PepperC1 : ITagReader
 
     public EventHandler<Tag> TagDetected { get; set; }
 
+    public void DummyCommand()
+    {
+        
+    }
+    
+    public void Acknowledge()
+    {
+        //acknowledge
+        throw new NotImplementedException();
+    }
+
     public void GetTagCount()
     {
         //GetTagCount

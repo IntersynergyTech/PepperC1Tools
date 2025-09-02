@@ -11,5 +11,7 @@ public class ParsedResponse
     }
 
     public Commands Command { get; }
+    public Commands AcknowledgeRespondsTo => Command == Commands.Acknowledge ? (Commands) CommandData[0] : throw new ArgumentException("Not an Acknowledge command");
     public byte[] CommandData { get; }
+    public byte[] AcknowledgeReponseCommand => Command == Commands.Acknowledge ? CommandData[1..] : throw new ArgumentException("Not an Acknowledge command");
 }

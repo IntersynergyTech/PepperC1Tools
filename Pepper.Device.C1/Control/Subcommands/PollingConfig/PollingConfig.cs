@@ -38,6 +38,8 @@ public enum ActiveAntennasMux
     Antenna6 = 0x20,
     Antenna7 = 0x40,
     Antenna8 = 0x80,
+    
+    AllAntennas = Antenna1 | Antenna2 | Antenna3 | Antenna4 | Antenna5 | Antenna6 | Antenna7 | Antenna8
 }
 
 public enum PollingEventDataMode

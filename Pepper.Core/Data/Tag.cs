@@ -23,6 +23,6 @@ public class Tag
 
     public override string ToString()
     {
-        return $"{CardType} {TagType} {BitConverter.ToString(TagId).Replace("-", "")}";
+        return $"{CardType} {TagType} {BitConverter.ToString(TagId).Replace("-", "")} at {AntennaId}";
     }
 }

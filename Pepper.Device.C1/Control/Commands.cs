@@ -25,4 +25,6 @@ public enum Commands
     Led = 0x14,
     WpanData = 0x15,
     PollingConfig = 0x16,
+    PollAsync = 0xFE,
+    Error = 0xFF
 }

@@ -1,8 +1,8 @@
-namespace Pepper.Device.C1.Ports;
+namespace Pepper.Device.C1.Ports.Checksum;
 
 // Taken straight from the published Software Manual for the C1.
 
-public class UartCrcCalculator
+public static class UartCrcCalculator
 {
     private static readonly ushort[] CrcTable =
     [
