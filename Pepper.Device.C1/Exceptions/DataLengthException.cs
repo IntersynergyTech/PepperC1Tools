@@ -5,4 +5,5 @@ public class DataLengthException : Exception
     public DataLengthException(string message) : base(message)
     {
     }
+
 }

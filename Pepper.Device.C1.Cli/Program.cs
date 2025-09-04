@@ -18,7 +18,7 @@ class Program
         c1Port.SetPollingAntennas(ActiveAntennasMux.AllAntennas);
         c1Port.SetPollingSupportedTechnologies(SupportedCardTypes.MifareFamily);
         c1Port.SetPollingTimeout(200);
-        //c1Port.SetPollingIgnoreTimeout(0);
+        //c1Port.SetPollingIgnoreTimeout(1000);
         c1Port.SetPollingEventPacket(PollingEventDataMode.Binary);
         c1Port.SetPollingActive(true);
 

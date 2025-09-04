@@ -1,15 +1,17 @@
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
 using Pepper.Core.Control;
 using Pepper.Core.Control.Subcommands;
 using Pepper.Core.Control.Subcommands.PollingConfig;
 using Pepper.Core.Data;
+using Pepper.Core.Extensions;
 using Pepper.Device.C1.Exceptions;
 using Pepper.Device.C1.Ports.Checksum;
 
 namespace Pepper.Device.C1.Ports;
 
-public class Uart : IC1Port
+public class Uart : IC1Port, IDisposable
 {
     private readonly string _portName;
     private readonly int _baudRate;
@@ -18,6 +20,8 @@ public class Uart : IC1Port
     private readonly StopBits _stopBits;
 
     private readonly SerialPort _port;
+    private readonly CancellationTokenSource _portWatcherCancellationTokenSource = new ();
+    private readonly Thread _portWatcherThread;
 
     private static readonly ushort LengthXor = 0xffff;
     private const byte frameStartByte = 0xF5;
@@ -50,11 +54,31 @@ public class Uart : IC1Port
 
         _port = port;
 
-        _port.DataReceived += PortOnDataReceived;
+        _portWatcherThread = new Thread(() => PortWatcher(_portWatcherCancellationTokenSource.Token));
+        _portWatcherThread.Start();
+        
+        //_port.DataReceived += PortOnDataReceived;
+        _frameReceived += FrameReceived;
+    }
+
+    
+
+    public void Close()
+    {
+        _portWatcherCancellationTokenSource.Cancel();
+        _port.Close();
+    }
+    
+    public void Dispose()
+    {
+        Close();
+        _port.Dispose();
     }
 
     private bool _bytesWaiting = false;
     private bool _pollingEnabled = false;
+    private EventHandler<byte[]> _frameReceived;
+    private byte[] _lastPayload = [];
 
     private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs e)
     {
@@ -76,6 +100,31 @@ public class Uart : IC1Port
         }
         else
         {
+            _bytesWaiting = true;
+        }
+    }
+    
+    private void FrameReceived(object? sender, byte[] e)
+    {
+        if (_pollingEnabled)
+        {
+            var data = ParseResponse(e);
+
+            if (data.Command == Commands.PollAsync)
+            {
+                var tag = ParseGetUidAsyncResponse(data);
+                SendCommand([(byte) Commands.Acknowledge]);
+                // raise event
+                TagRead?.Invoke(this, tag);
+            }
+            else
+            {
+                throw new InvalidOperationException("Recieved non-poll data when polling is enablesd!");
+            }
+        }
+        else
+        {
+            _lastPayload = e;
             _bytesWaiting = true;
         }
     }
@@ -120,6 +169,125 @@ public class Uart : IC1Port
         return frame.ToArray();
     }
 
+    private void PortWatcher(CancellationToken cancellationToken)
+    {
+        Queue<byte> readBuffer = new ();
+
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            // read any new bytes
+            if (_port.BytesToRead > 0)
+            {
+                var bytesToRead = _port.BytesToRead;
+                var bytesRead = new byte[bytesToRead];
+                _port.Read(bytesRead, 0, bytesToRead);
+
+                foreach (var b in bytesRead)
+                {
+                    readBuffer.Enqueue(b);
+                }
+            }
+            else
+            {
+                Thread.Sleep(16);
+            }
+
+            // we need at least 5 bytes to start processing a frame
+            if (readBuffer.Count < 5)
+            {
+                continue;
+            }
+            
+            // Process any frames we might have
+            var firstByte = readBuffer.Peek();
+
+            if (firstByte != frameStartByte)
+            {
+                // the first byte isn't the start of the frame. If the buffer is full of garbage, we need to clear it out until we find a start byte.
+                if (readBuffer.Count > 100)
+                {
+                    while (firstByte != frameStartByte && readBuffer.Count > 0)
+                    {
+                        readBuffer.Dequeue();
+
+                        if (readBuffer.Count > 0)
+                        {
+                            firstByte = readBuffer.Peek();
+                        }
+                    }
+                }
+                else
+                {
+                    // just wait for more data then.
+                    continue;
+                }
+            }
+
+            // we should now be at the start of a frame
+            if (readBuffer.Count < 5)
+            {
+                // not enough data to read length yet
+                continue;
+            }
+
+            while (readBuffer.Count >= 5)
+            {
+                var firstFive = readBuffer.DequeueMultiple(5);
+
+                // +1 for the command byte which isn't included in the length.
+                var additionalRequiredBytes = ParseHeaderLength(firstFive);
+
+                var framePayload = new List<byte>(firstFive);
+
+                var bufferAvailableBytes = Math.Min(readBuffer.Count, additionalRequiredBytes);
+                var portReadBytes = additionalRequiredBytes - bufferAvailableBytes;
+
+                for (int i = 0; i < bufferAvailableBytes; i++)
+                {
+                    framePayload.Add(readBuffer.Dequeue());
+                }
+
+                if (portReadBytes > 0)
+                {
+                    while (_port.BytesToRead < portReadBytes)
+                    {
+                        Thread.Sleep(5);
+                    }
+
+                    for (int i = 0; i < portReadBytes; i++)
+                    {
+                        framePayload.Add((byte) _port.ReadByte());
+                    }
+                }
+
+                // now we should have a full frame in framePayload
+                _frameReceived?.Invoke(this, framePayload.ToArray());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reads the first 5 bytes of a response and parses the length from it. You can provide a larger byte array, but only the first 5 bytes are used. Note the returned length is excluding the command byte, so the remaining bytes to dequeue will be the returned value plus 1.
+    /// </summary>
+    private int ParseHeaderLength(byte[] firstFiveBytes)
+    {
+        if (firstFiveBytes[0] != frameStartByte)
+        {
+            throw new ArgumentException("Response does not start with frame start byte");
+        }
+
+        var length = BitConverter.ToUInt16(firstFiveBytes, 1);
+
+        var xorLength = BitConverter.ToUInt16(firstFiveBytes, 3);
+
+        if ((length ^ LengthXor) != xorLength)
+        {
+            throw new ArgumentException("Response length XOR mismatch");
+        }
+
+        return length;
+    }
+
     private ParsedResponse WaitForResponse(bool skipWait = false)
     {
         if (!skipWait)
@@ -131,7 +299,7 @@ public class Uart : IC1Port
             }
         }
 
-        var bytesToRead = _port.BytesToRead;
+        /*var bytesToRead = _port.BytesToRead;
         var bytesRead = new byte[bytesToRead];
         _port.Read(bytesRead, 0, bytesToRead);
 
@@ -161,7 +329,9 @@ public class Uart : IC1Port
                 _port.Read(moreBytesRead, 0, moreBytesToRead);
                 bytesList.AddRange(moreBytesRead);
             }
-        }
+        }*/
+        
+        var response = ParseResponse(_lastPayload);
 
         _bytesWaiting = false;
 
@@ -183,19 +353,7 @@ public class Uart : IC1Port
             throw new DataLengthException("Response data too short");
         }
 
-        if (commandData[0] != frameStartByte)
-        {
-            throw new ArgumentException("Response does not start with frame start byte");
-        }
-
-        var length = BitConverter.ToUInt16(commandData, 1);
-
-        var xorLength = BitConverter.ToUInt16(commandData, 3);
-
-        if ((length ^ LengthXor) != xorLength)
-        {
-            throw new ArgumentException("Response length XOR mismatch");
-        }
+        var length = ParseHeaderLength(commandData);
 
         if (commandData.Length != length + 5) // +4 for start byte and length bytes. Note the last 2 bytes are CRC
         {
@@ -254,6 +412,8 @@ public class Uart : IC1Port
         var tag = new Tag(cardType, tagType, uid, antennaIdInt);
         return tag;
     }
+
+#region "Commands"
 
     public ParsedResponse SendCommandRaw(byte[] command)
     {
@@ -438,4 +598,6 @@ public class Uart : IC1Port
     {
         throw new NotImplementedException();
     }
+
+#endregion
 }
