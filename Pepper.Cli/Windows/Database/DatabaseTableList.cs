@@ -135,6 +135,7 @@ public class DatabaseTableList<TType> : Window where TType : class
                 { nameof(DeckStyle.Id), ds => ds.Id },
                 { nameof(DeckStyle.Name), ds => ds.Name },
                 { nameof(DeckStyle.IsFourColour), ds => ds.IsFourColour },
+                { nameof(DeckStyle.HasFourCornerLegend), ds => ds.HasFourCornerLegend },
                 { nameof(DeckStyle.DarkMode), ds => ds.DarkMode },
                 { nameof(DeckStyle.LargePrint), ds => ds.LargePrint },
                 { nameof(DeckStyle.BackDesignKey), ds => ds.BackDesignKey }

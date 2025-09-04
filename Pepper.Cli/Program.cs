@@ -4,6 +4,7 @@ using Pepper.Cli.Windows;
 using Pepper.Core.Data;
 using Pepper.Core.Devices.C1;
 using Pepper.Device.C1;
+using Pepper.Device.C1.Ports;
 using Pepper.Device.Dummy;
 using Terminal.Gui.App;
 
@@ -30,9 +31,12 @@ class Program
         Console.WriteLine("Getting reader(s)");
 
         // Add any more devices we want here.
-        var pepduino = new Device.PepDuino.PepDuino(readerId: 0, "COM3");
+        //var pepduino = new Device.PepDuino.PepDuino(readerId: 0, "COM3");
+        
+        var pepperUart = new Uart("COM5");
+        var pepper = new PepperC1(pepperUart, readerId: 1);
 
-        // Add a couple of dummy readers for testing to spam cards randomly.
+        /*// Add a couple of dummy readers for testing to spam cards randomly.
         var cardsList = CardsDbContext.Cards.ToList();
 
         var dummyReader1 = new DummyDevice(
@@ -49,12 +53,13 @@ class Program
             interval: 3000,
             startDelay: 6000,
             antennaIds: [0, 1, 2, 3, 4, 5, 6, 7]
-        );
+        );*/
 
         var multiReader = new MultiplexReader(
-            pepduino
-            , dummyReader1
-            , dummyReader2
+            //pepduino
+            //, dummyReader1
+            //, dummyReader2
+            pepper
         );
         multiReader.TagDetected += TagDetectedProxy;
 

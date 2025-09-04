@@ -10,6 +10,8 @@ public class Card
     public Suit Suit { get; set; }
     public DeckStyle DeckStyle { get; set; }
 
+    public string IdString => BitConverter.ToString(TagUid);
+
     public override string ToString()
     {
         return $"{Value.ToShortDisplayString()}{Suit.ToShortDisplayString()} [{BitConverter.ToString(TagUid)}] ({DeckStyle.Name})";

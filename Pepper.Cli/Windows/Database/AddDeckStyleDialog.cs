@@ -9,6 +9,7 @@ public class AddDeckStyleDialog : Dialog
 {
     private TextField nameField = new ();
     private CheckBox isFourColourCheckBox = new ();
+    private CheckBox isFourLegendCheckBox = new ();
     private CheckBox isDarkMode = new ();
     private CheckBox isLargePrint = new ();
     private TextField backDesignKey = new ();
@@ -21,26 +22,30 @@ public class AddDeckStyleDialog : Dialog
         Title = "Add new deck style";
         Width = Dim.Auto();
         Height = Dim.Auto();
-        
+
         nameField.Caption = "Name";
         nameField.Width = Dim.Fill();
         nameField.Y = 1;
 
         isFourColourCheckBox.Text = "Is Four Colour?";
         isFourColourCheckBox.Y = 3;
-        
+
+        isFourColourCheckBox.Text = "Has Four Corner Legend?";
+        isFourColourCheckBox.Y = 4;
+
         isDarkMode.Text = "Dark Mode?";
-        isDarkMode.Y = 4;
+        isDarkMode.Y = 5;
 
         isLargePrint.Text = "Large Print?";
-        isLargePrint.Y = 5;
-        
+        isLargePrint.Y = 6;
+
         backDesignKey.Caption = "Back Design Key";
         backDesignKey.Width = Dim.Fill();
-        backDesignKey.Y = 7;
+        backDesignKey.Y = 8;
 
         Add(nameField);
         Add(isFourColourCheckBox);
+        Add(isFourLegendCheckBox);
         Add(isDarkMode);
         Add(isLargePrint);
         Add(backDesignKey);
@@ -62,9 +67,10 @@ public class AddDeckStyleDialog : Dialog
         {
             Name = nameField.Text,
             IsFourColour = isFourColourCheckBox.CheckedState == CheckState.Checked,
+            HasFourCornerLegend = isFourLegendCheckBox.CheckedState == CheckState.Checked,
             DarkMode = isDarkMode.CheckedState == CheckState.Checked,
             LargePrint = isLargePrint.CheckedState == CheckState.Checked,
-            BackDesignKey= backDesignKey.Text
+            BackDesignKey = backDesignKey.Text
         };
 
         Program.CardsDbContext.DeckStyles.Add(newDeck);

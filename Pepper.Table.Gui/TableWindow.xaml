@@ -1,0 +1,64 @@
+<Window
+    x:Class="Pepper.Table.Gui.TableWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:Pepper.Table.Core;assembly=Pepper.Table.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dbModels="clr-namespace:Pepper.Cards.Data.DbModels;assembly=Pepper.Cards.Data"
+    xmlns:local="clr-namespace:Pepper.Table.Gui"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="TableWindow"
+    Width="800"
+    Height="450"
+    d:DataContext="TableState"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <core:TableState />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary x:Key="TemplatesDict" Source="ResourceTemplates.xaml" />
+    </Window.Resources>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Click="StartHand_OnClick" Content="Start hand" />
+            <Button Click="EndHand_OnClick" Content="End hand" />
+        </StackPanel>
+        <Grid>
+            <TextBlock>Table view</TextBlock>
+        </Grid>
+
+        <ItemsControl ItemsSource="{Binding Positions}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type core:TablePositionState}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="{Binding SeatNumber}" />
+                            <TextBlock FontSize="18" Text="{Binding Description}" />
+                        </StackPanel>
+                        <Border Padding="4" BorderThickness="1" BorderBrush="DimGray" Margin="6">
+                            <ItemsControl ItemsSource="{Binding Cards}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+
+                                        <StackPanel Orientation="Horizontal" MinHeight="128"
+                                                    HorizontalAlignment="Stretch" />
+
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type dbModels:Card}">
+                                        <ContentPresenter Content="{Binding}"
+                                                          ContentTemplate="{DynamicResource MiniCardTemplate}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</Window>

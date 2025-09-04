@@ -9,7 +9,12 @@ namespace Pepper.Device.C1;
 public class MultiplexReader
 {
     private Dictionary<int, ITagReader> _tagReaders;
-    
+
+    /// <summary>
+    /// You can set this if you need to control event behaviours like forcing events to fire on a certain thread, as they can come from anywhere.
+    /// </summary>
+    public Action<Action<DetectedTag>, DetectedTag> EventMarshaller { get; set; }
+
     public MultiplexReader(params ITagReader[] readers)
     {
         _tagReaders = readers.ToDictionary(x => x.ReaderId);
@@ -18,6 +23,8 @@ public class MultiplexReader
         {
             reader.TagDetected += ReaderTagDetected;
         }
+
+        EventMarshaller = DefaultEventMarshaller;
     }
 
     private void ReaderTagDetected(object? sender, Tag e)
@@ -25,7 +32,13 @@ public class MultiplexReader
         var reader = sender as ITagReader;
         if (reader == null) throw new ArgumentNullException(nameof(reader));
         var detectedTag = new DetectedTag(e, reader.ReaderId);
-        TagDetected?.Invoke(this, detectedTag);
+
+        EventMarshaller(tag => TagDetected?.Invoke(this, tag), detectedTag);
+    }
+
+    private void DefaultEventMarshaller(Action<DetectedTag> action, DetectedTag tag)
+    {
+        action(tag);
     }
 
     public void StartAll()

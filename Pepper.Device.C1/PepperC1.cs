@@ -6,26 +6,33 @@ namespace Pepper.Core.Devices.C1;
 
 //doc: https://eccel.co.uk/wp-content/downloads/Pepper_C1/C1_software_manual.pdf
 
-public class PepperC1 : ITagReader
+public class PepperC1 : ITagReader, IDisposable
 {
     public PepperC1(IC1Port port, int readerId)
     {
         Port = port;
+        Port.TagRead += TagRead;
+        ReaderId = readerId;
+    }
+
+    private void TagRead(object? sender, Tag e)
+    {
+        TagDetected?.Invoke(this, e);
     }
 
     public IC1Port Port { get; }
 
     public void StartReading()
     {
-        throw new NotImplementedException();
+        Port.SetPollingActive(true);
     }
 
     public void StopReading()
     {
-        throw new NotImplementedException();
+        Port.SetPollingActive(false);
     }
 
-    public int ReaderId { get; set; }
+    public int ReaderId { get; }
 
     public EventHandler<Tag> TagDetected { get; set; }
 
@@ -204,9 +211,9 @@ public class PepperC1 : ITagReader
         //WpanData
         throw new NotImplementedException();
     }
-
-    //Todo Breakouts:
-    //Protcol settings (including protocol auth)
-    // - includind children, ie wifi, wtc.
-    //Polling settings
+    
+    public void Dispose()
+    {
+        Port.Dispose();
+    }
 }

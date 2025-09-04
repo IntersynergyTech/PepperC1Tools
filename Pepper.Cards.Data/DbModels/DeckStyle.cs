@@ -6,6 +6,11 @@ public class DeckStyle
     /// If the deck is a four colour deck.
     /// </summary>
     public bool IsFourColour { get; set; }
+
+    /// <summary>
+    /// If the legend is printed in all four corners of the card (or else, just the top left and bottom right)
+    /// </summary>
+    public bool HasFourCornerLegend { get; set; }
     
     /// <summary>
     /// If the deck is displayed with light foreground on a dark background

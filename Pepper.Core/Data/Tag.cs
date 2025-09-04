@@ -21,6 +21,8 @@ public class Tag
 
     public int AntennaId { get; }
 
+    public string TagIdString => BitConverter.ToString(TagId);
+
     public override string ToString()
     {
         return $"{CardType} {TagType} {BitConverter.ToString(TagId).Replace("-", "")} at {AntennaId}";

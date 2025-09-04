@@ -19,17 +19,21 @@
     <StackPanel>
 
         <Border
-            Padding="8"
+            Padding="4"
             VerticalAlignment="Top"
             Background="Beige"
             BorderThickness="1">
-            <Grid>
+            <StackPanel Orientation="Horizontal" >
                 <Button
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
                     Command="Play"
+                    Margin="4"
                     Content="Start Readers" />
-            </Grid>
+                <Button
+                    Margin="4"
+                    Content="Show table view"
+                    Click="OpenTableViewButtonClicked"
+                    />
+            </StackPanel>
         </Border>
         <StackPanel>
             <TextBlock>Recent Detections:</TextBlock>
