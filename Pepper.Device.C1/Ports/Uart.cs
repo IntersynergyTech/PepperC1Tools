@@ -20,7 +20,7 @@ public class Uart : IC1Port, IDisposable
     private readonly StopBits _stopBits;
 
     private readonly SerialPort _port;
-    private readonly CancellationTokenSource _portWatcherCancellationTokenSource = new();
+    private readonly CancellationTokenSource _portWatcherCancellationTokenSource = new ();
     private readonly Thread _portWatcherThread;
 
     private static readonly ushort LengthXor = 0xffff;
@@ -66,8 +66,6 @@ public class Uart : IC1Port, IDisposable
         _frameReceived += FrameReceived;
     }
 
-
-
     public void Close()
     {
         _portWatcherCancellationTokenSource.Cancel();
@@ -76,6 +74,10 @@ public class Uart : IC1Port, IDisposable
 
     public void Dispose()
     {
+        if (_pollingEnabled)
+        {
+            SetPollingActive(false);
+        }
         Close();
         _port.Dispose();
     }
@@ -89,7 +91,7 @@ public class Uart : IC1Port, IDisposable
             if (data.Command == Commands.PollAsync)
             {
                 var tag = ParseGetUidAsyncResponse(data);
-                SendCommand([(byte)Commands.Acknowledge]);
+                SendCommand([(byte) Commands.Acknowledge]);
                 // raise event
                 TagRead?.Invoke(this, tag);
             }
@@ -113,7 +115,7 @@ public class Uart : IC1Port, IDisposable
             if (data.Command == Commands.PollAsync)
             {
                 var tag = ParseGetUidAsyncResponse(data);
-                SendCommand([(byte)Commands.Acknowledge]);
+                SendCommand([(byte) Commands.Acknowledge]);
                 // raise event
                 TagRead?.Invoke(this, tag);
             }
@@ -141,16 +143,16 @@ public class Uart : IC1Port, IDisposable
         List<byte> frame = [frameStartByte];
 
         // actual command length
-        var realCommandLength = (ushort)commandData.Length;
+        var realCommandLength = (ushort) commandData.Length;
 
         if (realCommandLength >= 1022) // Actual max length with CRC is 1024
         {
             throw new ArgumentException("Command data too long");
         }
 
-        ushort frameCommandLength = (ushort)(realCommandLength + 2); // +2 for CRC bytes
+        ushort frameCommandLength = (ushort) (realCommandLength + 2); // +2 for CRC bytes
 
-        var xorLength = (ushort)(frameCommandLength ^ LengthXor);
+        var xorLength = (ushort) (frameCommandLength ^ LengthXor);
 
         // add length to frame
         frame.AddRange(BitConverter.GetBytes(frameCommandLength));
@@ -171,7 +173,7 @@ public class Uart : IC1Port, IDisposable
 
     private void PortWatcher(CancellationToken cancellationToken)
     {
-        Queue<byte> readBuffer = new();
+        Queue<byte> readBuffer = new ();
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -256,7 +258,7 @@ public class Uart : IC1Port, IDisposable
 
                     for (int i = 0; i < portReadBytes; i++)
                     {
-                        framePayload.Add((byte)_port.ReadByte());
+                        framePayload.Add((byte) _port.ReadByte());
                     }
                 }
 
@@ -299,47 +301,15 @@ public class Uart : IC1Port, IDisposable
             }
         }
 
-        /*var bytesToRead = _port.BytesToRead;
-        var bytesRead = new byte[bytesToRead];
-        _port.Read(bytesRead, 0, bytesToRead);
-
-        var bytesList = bytesRead.ToList();
-
-        ParsedResponse? response = null;
-
-        while (response == null)
-        {
-            try
-            {
-                response = ParseResponse(bytesList.ToArray());
-            }
-            catch (DataLengthException e)
-            {
-                // just impatient, wait a moment and try again.
-                Thread.Sleep(5);
-
-                // read more bytes
-                while (_port.BytesToRead == 0)
-                {
-                    Thread.Sleep(5);
-                }
-
-                var moreBytesToRead = _port.BytesToRead;
-                var moreBytesRead = new byte[moreBytesToRead];
-                _port.Read(moreBytesRead, 0, moreBytesToRead);
-                bytesList.AddRange(moreBytesRead);
-            }
-        }*/
-
         var response = ParseResponse(_lastPayload);
 
         _bytesWaiting = false;
 
         if (response.Command == Commands.Error)
         {
-            var respondingTo = (Commands)response.CommandData[0];
+            var respondingTo = (Commands) response.CommandData[0];
             var layerByte = response.CommandData[1];
-            var errorCode = (ErrorCodes)response.CommandData[2];
+            var errorCode = (ErrorCodes) response.CommandData[2];
             throw new DeviceErrorException(respondingTo, layerByte, errorCode);
         }
 
@@ -379,7 +349,7 @@ public class Uart : IC1Port, IDisposable
             throw new ArgumentException("Response CRC mismatch");
         }
 
-        var command = (Commands)data[0];
+        var command = (Commands) data[0];
         return new ParsedResponse(command, data.Skip(1).ToArray());
     }
 
@@ -389,7 +359,7 @@ public class Uart : IC1Port, IDisposable
     {
         var commandData = response.CommandData;
 
-        var command = (Commands)commandData[0];
+        var command = (Commands) commandData[0];
 
         if (command != Commands.GetTagUid)
         {
@@ -397,14 +367,14 @@ public class Uart : IC1Port, IDisposable
         }
 
         var cardTypeByte = commandData[1];
-        var cardType = (CardType)cardTypeByte;
+        var cardType = (CardType) cardTypeByte;
 
         var tagTypeByte = commandData[2];
-        var tagType = (TagType)tagTypeByte;
+        var tagType = (TagType) tagTypeByte;
 
         // this bit is undocumented :)
         var antennaId = commandData[3];
-        var antennaIdInt = (int)antennaId;
+        var antennaIdInt = (int) antennaId;
 
         //okay and now we're documented again
         var uid = commandData[4..];
@@ -413,7 +383,7 @@ public class Uart : IC1Port, IDisposable
         return tag;
     }
 
-    #region "Commands"
+#region "Commands"
 
     public ParsedResponse SendCommandRaw(byte[] command)
     {
@@ -423,7 +393,7 @@ public class Uart : IC1Port, IDisposable
 
     public void DummyCommand()
     {
-        SendCommand([(byte)Commands.Dummy]);
+        SendCommand([(byte) Commands.Dummy]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge && response.AcknowledgeRespondsTo != Commands.Dummy)
@@ -434,7 +404,7 @@ public class Uart : IC1Port, IDisposable
 
     public string GetFirmwareVersion()
     {
-        SendCommand([(byte)Commands.GetVersion]);
+        SendCommand([(byte) Commands.GetVersion]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.GetVersion)
@@ -448,7 +418,7 @@ public class Uart : IC1Port, IDisposable
 
     public int GetTagCount()
     {
-        SendCommand([(byte)Commands.GetTagCount]);
+        SendCommand([(byte) Commands.GetTagCount]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.GetTagCount)
@@ -463,7 +433,13 @@ public class Uart : IC1Port, IDisposable
 
     public void SetPollingActive(bool active)
     {
-        SendCommand([(byte)Commands.SetPollingMode, (byte)(active ? 1 : 0)]);
+        SendCommand([(byte) Commands.SetPollingMode, (byte) (active ? 1 : 0)]);
+
+        if (!active)
+        {
+            _pollingEnabled = active;
+        }
+
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.SetPollingMode)
@@ -471,13 +447,16 @@ public class Uart : IC1Port, IDisposable
             throw new ArgumentException("Did not receive acknowledge for set polling active command");
         }
 
-        _pollingEnabled = active;
+        if (active)
+        {
+            _pollingEnabled = active;
+        }
     }
 
     public void SetPollingSupportedTechnologies(SupportedCardTypes types)
     {
-        var techByte = (byte)types;
-        SendCommand([(byte)Commands.PollingConfig, (byte)PollingConfigCommands.SupportedCardTypes, techByte]);
+        var techByte = (byte) types;
+        SendCommand([(byte) Commands.PollingConfig, (byte) PollingConfigCommands.SupportedCardTypes, techByte]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.PollingConfig)
@@ -493,8 +472,8 @@ public class Uart : IC1Port, IDisposable
 
     public void SetPollingRfidPowerLevel(RfidPowerLevel level)
     {
-        var levelByte = (byte)level;
-        SendCommand([(byte)Commands.PollingConfig, (byte)PollingConfigCommands.RfidPower, levelByte]);
+        var levelByte = (byte) level;
+        SendCommand([(byte) Commands.PollingConfig, (byte) PollingConfigCommands.RfidPower, levelByte]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.PollingConfig)
@@ -558,8 +537,8 @@ public class Uart : IC1Port, IDisposable
 
     public void SetPollingAntennas(ActiveAntennasMux antennas)
     {
-        var antennasByte = (byte)antennas;
-        SendCommand([(byte)Commands.PollingConfig, (byte)PollingConfigCommands.ActiveAntennasMux, antennasByte]);
+        var antennasByte = (byte) antennas;
+        SendCommand([(byte) Commands.PollingConfig, (byte) PollingConfigCommands.ActiveAntennasMux, antennasByte]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.PollingConfig)
@@ -576,8 +555,8 @@ public class Uart : IC1Port, IDisposable
     public void SetPollingEventPacket(PollingEventDataMode mode)
     {
         // Note the device wants this set for both "known" and "unknown" types, even though everything will be unknown, so we have to send tit twice.
-        var modeByte = (byte)mode;
-        SendCommand([(byte)Commands.PollingConfig, (byte)PollingConfigCommands.EventDataMode, 1, modeByte]);
+        var modeByte = (byte) mode;
+        SendCommand([(byte) Commands.PollingConfig, (byte) PollingConfigCommands.EventDataMode, 1, modeByte]);
         var response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.PollingConfig)
@@ -585,7 +564,7 @@ public class Uart : IC1Port, IDisposable
             throw new ArgumentException("Did not receive acknowledge for set polling event packet command");
         }
 
-        SendCommand([(byte)Commands.PollingConfig, (byte)PollingConfigCommands.EventDataMode, 0, modeByte]);
+        SendCommand([(byte) Commands.PollingConfig, (byte) PollingConfigCommands.EventDataMode, 0, modeByte]);
         response = WaitForResponse();
 
         if (response.Command != Commands.Acknowledge || response.AcknowledgeRespondsTo != Commands.PollingConfig)
@@ -599,5 +578,5 @@ public class Uart : IC1Port, IDisposable
         throw new NotImplementedException();
     }
 
-    #endregion
+#endregion
 }

@@ -1,0 +1,91 @@
+<Window x:Class="Pepper.Table.Gui.Windows.GameManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Pepper.Table.Gui.Windows"
+        xmlns:core="clr-namespace:Pepper.Table.Core;assembly=Pepper.Table.Core"
+        xmlns:dbModels="clr-namespace:Pepper.Cards.Data.DbModels;assembly=Pepper.Cards.Data"
+        mc:Ignorable="d"
+        Title="GameManager" Height="450" Width="800" Closing="WindowClosing">
+    <Window.DataContext>
+        <local:GameManagerContext></local:GameManagerContext>
+    </Window.DataContext>
+    <Window.Resources>
+        <RoutedUICommand x:Key="StartHandCommand" Text="Start Hand"/>
+        <RoutedUICommand x:Key="EndHandCommand" Text="End Hand"/>
+        <RoutedUICommand x:Key="DiscardHandCommand" Text="Discard Current Hand"/>
+        <RoutedUICommand x:Key="EndGameCommand" Text="End Game"/>
+        <RoutedUICommand x:Key="OpenLiveTableCommand" Text="Open Live Table View"/>
+    </Window.Resources>
+    
+    <Window.CommandBindings>
+        <CommandBinding x:Name="StartHandCommand" Command="{StaticResource StartHandCommand}" Executed="StartHand_Executed"/>
+        <CommandBinding x:Name="EndHandCommand" Command="{StaticResource EndHandCommand}" Executed="EndHand_Executed"/>
+        <CommandBinding x:Name="DiscardHandCommand" Command="{StaticResource DiscardHandCommand}" Executed="DiscardHand_Executed"/>
+        <CommandBinding x:Name="EndGameCommand" Command="{StaticResource EndGameCommand}" Executed="EndGame_Executed"/>
+        <CommandBinding x:Name="OpenLiveTableCommand" Command="{StaticResource OpenLiveTableCommand}" Executed="OpenLiveTable_Executed"/>
+    </Window.CommandBindings>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <UniformGrid Grid.Row="0" Rows="1" Background="LightGray">
+            <UniformGrid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Padding" Value="8"/>
+                    <Setter Property="Margin" Value="8"/>
+                </Style>
+            </UniformGrid.Resources>
+            <Button Command="{StaticResource StartHandCommand}" Content="▶️ Start Hand"/>
+            <Button Command="{StaticResource DiscardHandCommand}" Content="🗑️ Discard &amp; Reset"/>
+            <Button Command="{StaticResource EndHandCommand}" Content="⏹️ End Hand"/>
+            <Button Command="{StaticResource EndGameCommand}" Content="🥳 End Game"/>
+        </UniformGrid>
+        <Grid Grid.Row="1" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <TextBlock FontSize="16">Current Hand States</TextBlock>
+                <ItemsControl Margin="16,8" ItemsSource="{Binding TableState.Positions}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type core:TablePositionState}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="4">
+                                    <TextBlock Text="{Binding Position.SeatNumber}" FontWeight="Bold" Margin="4,0"/>
+                                    <TextBlock Text="{Binding Position.Description}" Margin="4,0"/>
+                                    <TextBlock Text="{Binding Position.Type}" Margin="4,0"/>
+                                </StackPanel>
+                                <Border Padding="4" BorderThickness="1" BorderBrush="DimGray" Margin="6">
+                                    <ItemsControl ItemsSource="{Binding Cards}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+
+                                                <StackPanel Orientation="Horizontal" MinHeight="35"
+                                                            HorizontalAlignment="Stretch" />
+
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type dbModels:Card}">
+                                                <Border Background="#444" BorderBrush="#222" BorderThickness="1" CornerRadius="8" Margin="4,0" Width="25" Height="35"></Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Border>
+                            </StackPanel>
+                            
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="👀 Open Live Table View" Padding="8" FontSize="16" Command="{StaticResource OpenLiveTableCommand}"></Button>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</Window>

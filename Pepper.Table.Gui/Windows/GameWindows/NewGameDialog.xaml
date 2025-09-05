@@ -1,0 +1,41 @@
+<Window x:Class="Pepper.Table.Gui.Windows.NewGameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Pepper.Table.Gui.Windows"
+        mc:Ignorable="d"
+        Title="Create New Game" Height="200" Width="400" d:DataContext="NewGameContext"
+        WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <local:NewGameContext></local:NewGameContext>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right" VerticalAlignment="Center"
+                   Text="Select Game Type">
+        </TextBlock>
+        <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+            <TextBlock TextAlignment="Right"  Text="Notes?"></TextBlock>
+            <TextBlock TextAlignment="Right"  Text="Notes can be edited in the game manager during the game." TextWrapping="Wrap" FontStyle="Italic" Foreground="#444" FontSize="9"></TextBlock>
+        </StackPanel>
+        
+        <ComboBox Grid.Row="0" Grid.Column="1" Margin="4" Name="GameTypeComboBox" VerticalAlignment="Center"
+                  ItemsSource="{Binding GameTypes}" SelectedItem="{Binding SelectedGameType}">
+
+        </ComboBox>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="4" Text="{Binding NewGameNotes}"></TextBox>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Cancel" Margin="4" Click="Cancel_Click"/>
+            <Button Content="Start Game" Margin="4" Click="StartGame_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -4,6 +4,9 @@ using Pepper.Device.C1.Ports;
 
 namespace Pepper.Device.C1;
 
+/// <summary>
+/// There's a lot in here, but the only things that matter really are the TagRead event.
+/// </summary>
 public interface IC1Port : IDisposable
 {
     public EventHandler<Tag> TagRead { get; set; }

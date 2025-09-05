@@ -57,5 +57,16 @@ public class MultiplexReader
         }
     }
 
+    public void DisposeAll()
+    {
+        foreach (var reader in _tagReaders.Values)
+        {
+            if (reader is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+        }
+    }
+
     public EventHandler<DetectedTag> TagDetected { get; set; }
 }

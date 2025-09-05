@@ -12,9 +12,11 @@
     Width="800"
     Height="450"
     Background="LightCyan"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Closing="MainWindow_OnClosing"
+    >
     <Window.Resources>
-        <ResourceDictionary x:Key="TemplatesDict" Source="ResourceTemplates.xaml" />
+        <ResourceDictionary x:Key="TemplatesDict" Source="/ResourceTemplates.xaml" />
     </Window.Resources>
     <StackPanel>
 
@@ -33,6 +35,7 @@
                     Content="Show table view"
                     Click="OpenTableViewButtonClicked"
                     />
+                <Button Margin="4" Content="Games List" Click="GamesListButtonClicked"></Button>
             </StackPanel>
         </Border>
         <StackPanel>

@@ -71,6 +71,7 @@ class Program
         Console.WriteLine("Stopping Readers...");
 
         multiReader.StopAll();
+        multiReader.DisposeAll();
 
         Console.WriteLine("Thanks for playing Wing Commander!");
     }

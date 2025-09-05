@@ -10,7 +10,7 @@ public class CardMovement
         CardMovementType type,
         TablePosition newPosition,
         TablePosition? previousPosition,
-        int timestamp
+        double timestamp
     )
     {
         Card = card;
@@ -23,6 +23,6 @@ public class CardMovement
     public Card Card { get; }
     public TablePosition NewPosition { get; }
     public TablePosition? PreviousPosition { get; }
-    public int Timestamp { get; }
+    public double Timestamp { get; }
     public CardMovementType Type { get; }
 }

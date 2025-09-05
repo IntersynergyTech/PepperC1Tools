@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using System.Windows.Threading;
 using Microsoft.EntityFrameworkCore;
 using Pepper.Cards.Data;
 using Pepper.Cards.Data.DbModels;
+using Pepper.Core.Control.Subcommands.PollingConfig;
 using Pepper.Core.Data;
 using Pepper.Core.Devices.C1;
 using Pepper.Device.C1;
@@ -13,6 +15,7 @@ using Pepper.Device.C1.Ports;
 using Pepper.Device.Dummy;
 using Pepper.Device.PepDuino;
 using Pepper.Table.Core;
+using Pepper.Table.Gui.Windows;
 
 namespace Pepper.Table.Gui;
 
@@ -21,7 +24,7 @@ namespace Pepper.Table.Gui;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MultiplexReader Reader { get; }
+    public static MultiplexReader Reader { get; set; }
     private readonly Dispatcher _uiDispatcher;
     public EventHandler<DetectedCard> CardDetected { get; set; }
 
@@ -44,8 +47,9 @@ public partial class MainWindow : Window
 
         var pepperUart = new Uart("COM5");
         var pepperC1 = new PepperC1(pepperUart, readerId: 1);
-        
+
         pepperUart.SetPollingTimeout(50);
+        pepperUart.SetPollingAntennas(ActiveAntennasMux.Antenna1 | ActiveAntennasMux.Antenna7 | ActiveAntennasMux.Antenna8);
 
         Reader = new MultiplexReader(pepperC1);
         Reader.EventMarshaller = UiThreadEventMarshaller;
@@ -126,6 +130,20 @@ public partial class MainWindow : Window
         var tableWindow = new TableWindow(tableState);
         tableWindow.Show();
 
+        ShowIncoming = false;
+    }
+
+    private void MainWindow_OnClosing(object? sender, CancelEventArgs e)
+    {
+        Reader.StopAll();
+        Reader.DisposeAll();
+        Application.Current.Shutdown();
+    }
+
+    private void GamesListButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var gamesListWindow = new GamesList();
+        gamesListWindow.Show();
         ShowIncoming = false;
     }
 }

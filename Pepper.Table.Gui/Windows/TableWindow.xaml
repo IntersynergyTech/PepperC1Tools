@@ -10,21 +10,20 @@
     Title="TableWindow"
     Width="800"
     Height="450"
+    WindowStartupLocation="CenterOwner"
     d:DataContext="TableState"
     mc:Ignorable="d">
     <Window.DataContext>
         <core:TableState />
     </Window.DataContext>
     <Window.Resources>
-        <ResourceDictionary x:Key="TemplatesDict" Source="ResourceTemplates.xaml" />
+        <ResourceDictionary x:Key="TemplatesDict" Source="/ResourceTemplates.xaml" />
     </Window.Resources>
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Button Click="StartHand_OnClick" Content="Start hand" />
-            <Button Click="EndHand_OnClick" Content="End hand" />
         </StackPanel>
         <Grid>
-            <TextBlock>Table view</TextBlock>
+            <TextBlock>Live Table State view</TextBlock>
         </Grid>
 
         <ItemsControl ItemsSource="{Binding Positions}">

@@ -7,6 +7,6 @@ public class Game
     public GameType Type { get; set; }
     public DateTime StartedUtc { get; set; }
     public DateTime? EndedUtc { get; set; }
-    public ICollection<GameHand> Hands { get; set; }
+    public ICollection<GameHand> Hands { get; set; } = new List<GameHand>();
     public string Notes { get; set; }
 }

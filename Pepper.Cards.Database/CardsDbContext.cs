@@ -9,6 +9,10 @@ public class CardsDbContext : DbContext
     {
     }
 
+    public CardsDbContext()
+    {
+    }
+
     public DbSet<DeckStyle> DeckStyles { get; set; }
     public DbSet<Card> Cards { get; set; }
     public DbSet<TablePosition> TablePositions { get; set; }

@@ -30,8 +30,8 @@ public class AddDeckStyleDialog : Dialog
         isFourColourCheckBox.Text = "Is Four Colour?";
         isFourColourCheckBox.Y = 3;
 
-        isFourColourCheckBox.Text = "Has Four Corner Legend?";
-        isFourColourCheckBox.Y = 4;
+        isFourLegendCheckBox.Text = "Has Four Corner Legend?";
+        isFourLegendCheckBox.Y = 4;
 
         isDarkMode.Text = "Dark Mode?";
         isDarkMode.Y = 5;

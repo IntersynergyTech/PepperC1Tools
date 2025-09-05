@@ -1,0 +1,26 @@
+<Window x:Class="Pepper.Table.Gui.Windows.GamesList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Pepper.Table.Gui.Windows"
+        mc:Ignorable="d"
+        Title="Games List" Height="450" Width="800" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray>
+            <ToolBar>
+                <ToolBarPanel>
+                    <Button Content="New Game" Click="NewGame_Click"></Button>
+                </ToolBarPanel>
+            </ToolBar>    
+        </ToolBarTray>
+        
+        <Grid Grid.Row="1" Background="LightGray">
+            <DataGrid></DataGrid>
+        </Grid>
+    </Grid>
+</Window>
