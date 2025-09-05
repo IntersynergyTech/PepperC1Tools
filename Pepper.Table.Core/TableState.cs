@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Pepper.Cards.Data.DbModels;
+using Pepper.Cards.Data.Enums;
 using Pepper.Core.Data;
 using Pepper.Device.C1;
 using Pepper.Table.Core.Helpers;

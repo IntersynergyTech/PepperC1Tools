@@ -22,7 +22,7 @@ class Program
 
         Console.WriteLine("Preparing database...");
         var optionsBulder = new DbContextOptionsBuilder<CardsDbContext>();
-        optionsBulder.UseSqlite("Data Source=C:/sources/pepper-c1-tool/cards.db");
+        optionsBulder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Integrated Security=true");
         CardsDbContext = new CardsDbContext(optionsBulder.Options);
 
         CardsDbContext.Database.EnsureCreated();

@@ -1,4 +1,5 @@
 using Pepper.Cards.Data.DbModels;
+using Pepper.Cards.Data.Enums;
 
 namespace Pepper.Table.Core.Helpers;
 
@@ -24,10 +25,4 @@ public class CardMovement
     public TablePosition? PreviousPosition { get; }
     public int Timestamp { get; }
     public CardMovementType Type { get; }
-}
-
-public enum CardMovementType
-{
-    New = 1,
-    Moved = 2
 }
