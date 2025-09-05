@@ -44,6 +44,8 @@ public partial class MainWindow : Window
 
         var pepperUart = new Uart("COM5");
         var pepperC1 = new PepperC1(pepperUart, readerId: 1);
+        
+        pepperUart.SetPollingTimeout(50);
 
         Reader = new MultiplexReader(pepperC1);
         Reader.EventMarshaller = UiThreadEventMarshaller;

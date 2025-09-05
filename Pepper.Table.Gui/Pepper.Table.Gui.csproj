@@ -17,4 +17,8 @@
       <ProjectReference Include="..\Pepper.Table.Core\Pepper.Table.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CardBacks\" />
+    </ItemGroup>
+
 </Project>
