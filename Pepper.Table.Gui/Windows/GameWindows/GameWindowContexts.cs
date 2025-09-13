@@ -30,4 +30,5 @@ public class GameManagerContext : INotifyPropertyChanged
     public TimeSpan AverageTimePerHand { get; set; }
     public TableState TableState { get; set; }
     public bool GameRunning { get; set; } = true;
+    public int TableId { get; set; } = 1;
 }

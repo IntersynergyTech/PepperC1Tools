@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -7,6 +9,7 @@ using System.Windows.Threading;
 using Microsoft.EntityFrameworkCore;
 using Pepper.Cards.Data;
 using Pepper.Cards.Data.DbModels;
+using Pepper.Cards.Data.Enums;
 using Pepper.Core.Control.Subcommands.PollingConfig;
 using Pepper.Core.Data;
 using Pepper.Core.Devices.C1;
@@ -38,15 +41,22 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        var res = SetupTable().Result;
 
         _uiDispatcher = Dispatcher.CurrentDispatcher;
 
         // Load all the DB data we will need
         CardCache = App.CardsDbContext.Cards.Include(d => d.DeckStyle).ToList();
         TablePositionReaders = App.CardsDbContext.TablePositionReaders.Include(r => r.TablePosition).ToList();
+        foreach(var reader in TablePositionReaders)
+        {
+            var result = AddTablePosition(res, reader.AntennaId, reader.TablePosition.Type).Result;
+            Console.WriteLine("Add position result: " + result);
+        }
 
         var pepperUart = new Uart("COM5");
         var pepperC1 = new PepperC1(pepperUart, readerId: 1);
+        
 
         pepperUart.SetPollingTimeout(50);
         pepperUart.SetPollingAntennas(ActiveAntennasMux.Antenna1 | ActiveAntennasMux.Antenna7 | ActiveAntennasMux.Antenna8);
@@ -62,6 +72,51 @@ public partial class MainWindow : Window
 
         ShowIncoming = true;
     }
+
+    private async Task<int> SetupTable()
+    {
+        var url = "https://localhost:7582/table";
+        var tableData = new TableSetupData("My Table");
+        using var client = new HttpClient();
+        var response = client.PostAsJsonAsync(url, tableData).Result;
+        if (response.IsSuccessStatusCode)
+        {
+            var responseData = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Table setup response: " + responseData);
+            if (responseData != null) return 1;
+            Console.WriteLine("Error parsing table setup response");
+        }
+        else
+        {
+            Console.WriteLine("Error setting up table: " + response.StatusCode);
+        }
+
+        return 0;
+    }
+    public record CreateTableResp(int id, string tableName, string[] positions, string latestTableStateJson, string latestTableState);
+
+
+    private async Task<int> AddTablePosition(int tableId, int positionNumber, TablePositionType type)
+    {
+        var url = $"https://localhost:7582/table/{tableId}/positions";
+        var positionData = new { positionNumber = positionNumber, type = type };
+        using var client = new HttpClient();
+        var response = client.PostAsJsonAsync(url, positionData).Result;
+        if (response.IsSuccessStatusCode)
+        {
+            var responseData = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Add position response: " + responseData);
+        }
+        else
+        {
+            Console.WriteLine("Error adding position: " + response.StatusCode);
+            return 0;
+        }
+
+        return 0;
+    }
+
+    private record TableSetupData(string tableName);
 
     private void UiThreadEventMarshaller(Action<DetectedTag> action, DetectedTag tag)
     {

@@ -1,7 +1,10 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
 using Pepper.Cards.Data.DbModels;
+using Pepper.Cards.Data.Enums;
 using Pepper.Table.Core.Helpers;
 
 namespace Pepper.Table.Gui.Windows;
@@ -9,6 +12,7 @@ namespace Pepper.Table.Gui.Windows;
 public partial class GameManager : Window
 {
     public GameManagerContext Context { get; }
+    private HubConnection _hubConnection;
 
     public GameManager(GameManagerContext gameManagerContext)
     {
@@ -20,7 +24,9 @@ public partial class GameManager : Window
         DiscardHandCommand.Command.CanExecute(false);
         StartHandCommand.Command.CanExecute(true);
         EndGameCommand.Command.CanExecute(true);
-        
+        _hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:7582/HandTrackingHub").WithAutomaticReconnect().Build();
+        _hubConnection.StartAsync();
+        _hubConnection.SendAsync("JoinTableGroup", Context.TableId);
         Context.TableState.CardMovementDetected += CardMovementDetected;
     }
 
@@ -35,7 +41,22 @@ public partial class GameManager : Window
             Time = e.Timestamp
         };
         Context.CurrentHand?.Steps.Add(handStep);
-
+        var handTrackingDto = new HandTrackingEventMessageDto
+        {
+            Rank = e.Card.Value,
+            Suit = e.Card.Suit,
+            TablePosition = e.NewPosition.Id,
+            TableId = Context.TableId,
+            TimestampUtc = DateTime.UtcNow
+        };
+        try
+        {
+            _hubConnection.SendAsync("RecordEvent", handTrackingDto).Wait();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+        }
     }
 
     private void DiscardHand()
@@ -136,3 +157,19 @@ public partial class GameManager : Window
     }
 }
 
+public class HandTrackingEventMessageDto
+{
+    [Range(1, int.MaxValue)]
+    public int TableId { get; set; }
+
+    [Required]
+    public Suit Suit { get; set; }
+
+    [Required]
+    public CardValue Rank { get; set; }
+
+    [Range(1, int.MaxValue)]
+    public int TablePosition { get; set; }
+
+    public DateTime? TimestampUtc { get; set; }
+}

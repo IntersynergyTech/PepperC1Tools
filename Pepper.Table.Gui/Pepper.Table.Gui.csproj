@@ -50,6 +50,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.9" />
       <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     </ItemGroup>
 
