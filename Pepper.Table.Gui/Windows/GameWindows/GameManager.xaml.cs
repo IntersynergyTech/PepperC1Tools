@@ -47,7 +47,8 @@ public partial class GameManager : Window
             Suit = e.Card.Suit,
             TablePosition = e.NewPosition.Id,
             TableId = Context.TableId,
-            TimestampUtc = DateTime.UtcNow
+            TimestampUtc = DateTime.UtcNow,
+            CardUid = e.Card.TagUid
         };
         try
         {
@@ -172,4 +173,6 @@ public class HandTrackingEventMessageDto
     public int TablePosition { get; set; }
 
     public DateTime? TimestampUtc { get; set; }
+    
+    public byte[] CardUid { get; set; }
 }
