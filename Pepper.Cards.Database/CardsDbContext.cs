@@ -83,7 +83,7 @@ public class CardsDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Integrated Security=true");
+            optionsBuilder.UseSqlServer("Data Source=localhost;Database=CardsData;Integrated Security=true;TrustServerCertificate=True;");
         }
     }
 }

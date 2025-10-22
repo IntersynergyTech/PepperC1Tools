@@ -32,6 +32,11 @@ public class DeckStyle
     /// A key to identify the asset to use for the back design of the cards. UIs can use this if they want to more accurately show "hidden" cards in player positions more true to life.
     /// </summary>
     public string BackDesignKey { get; set; }
+    
+    /// <summary>
+    /// Optional ApiDeckId to associate with this deck style with the decks on the API.
+    /// </summary>
+    public int? ApiDeckId { get; set; }
 
     public override string ToString()
     {

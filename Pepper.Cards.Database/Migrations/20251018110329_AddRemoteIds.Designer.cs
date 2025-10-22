@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pepper.Cards.Database;
 
@@ -11,9 +12,11 @@ using Pepper.Cards.Database;
 namespace Pepper.Cards.Database.Migrations
 {
     [DbContext(typeof(CardsDbContext))]
-    partial class CardsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251018110329_AddRemoteIds")]
+    partial class AddRemoteIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

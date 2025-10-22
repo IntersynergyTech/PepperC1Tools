@@ -9,6 +9,7 @@ public class Card
     public byte[] TagUid { get; set; }
     public Suit Suit { get; set; }
     public DeckStyle DeckStyle { get; set; }
+    public int? RemoteDeckId { get; set; }
 
     public string IdString => BitConverter.ToString(TagUid);
 
