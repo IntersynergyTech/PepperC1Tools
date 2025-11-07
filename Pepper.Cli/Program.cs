@@ -1,9 +1,12 @@
-﻿using Intersynergy.Poker.ApiClient;
+﻿using System.IO.Ports;
+using System.Runtime.InteropServices;
+using Intersynergy.Poker.ApiClient;
 using Microsoft.EntityFrameworkCore;
 using Pepper.Cards.Data.Enums;
 using Pepper.Cards.Database;
 using Pepper.Cli.Windows;
 using Pepper.Core.Data;
+using Pepper.Core.Devices;
 using Pepper.Core.Devices.C1;
 using Pepper.Device.C1;
 using Pepper.Device.C1.Ports;
@@ -57,9 +60,32 @@ class Program
 
         // Add any more devices we want here.
         //var pepduino = new Device.PepDuino.PepDuino(readerId: 0, "COM3");
+        var peppers = new List<ITagReader>();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            var availablePorts = GetAvailableSerialPorts();
+            Console.WriteLine("Available Serial Ports:");
+            
+            foreach (var port in availablePorts)
+            {
+                Console.WriteLine("Attempting to setup Pepper C1 on port " + port);
+                try
+                {
+                    var index = availablePorts.IndexOf(port);
+                    var c1Port = new Uart(port);
+                    var pepper = new PepperC1(c1Port, readerId: index);
+                    peppers.Add(pepper);
+                    Console.WriteLine("Successfully connected Pepper C1 on port " + port);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed to connect on port " + port);
+                }
+            }
+            
+        }
 
-        var pepperUart = new Uart("COM5");
-        var pepper = new PepperC1(pepperUart, readerId: 1);
+
 
         /*// Add a couple of dummy readers for testing to spam cards randomly.
         var cardsList = CardsDbContext.Cards.ToList();
@@ -80,11 +106,7 @@ class Program
             antennaIds: [0, 1, 2, 3, 4, 5, 6, 7]
         );*/
 
-        var multiReader = new MultiplexReader(
-            //pepduino
-            //, dummyReader1
-            //, dummyReader2
-            pepper
+        var multiReader = new MultiplexReader(peppers.ToArray()
         );
         multiReader.TagDetected += TagDetectedProxy;
 
@@ -99,6 +121,36 @@ class Program
         multiReader.DisposeAll();
 
         Console.WriteLine("Thanks for playing Wing Commander!");
+    }
+
+    private static List<string> GetAvailableSerialPorts()
+    {
+        var returnable = new List<string>();
+        foreach (var port in SerialPort.GetPortNames())
+        {
+            try
+            {
+                var sp = new SerialPort(port)
+                {
+                    BaudRate = 9600,
+                    Parity = Parity.None,
+                    DataBits = 8,
+                    StopBits = StopBits.One,
+                    Handshake = Handshake.None,
+                    ReadTimeout = 500,
+                    WriteTimeout = 500
+                };
+                sp.Open();
+                returnable.Add(port);
+                sp.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error with port {port}: {e.Message}");
+                continue;
+            }
+        }
+        return returnable;
     }
 
     private static void TagDetectedProxy(object? sender, DetectedTag tag)
