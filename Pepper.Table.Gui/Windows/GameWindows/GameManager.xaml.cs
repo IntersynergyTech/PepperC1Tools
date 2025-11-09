@@ -24,7 +24,7 @@ public partial class GameManager : Window
         DiscardHandCommand.Command.CanExecute(false);
         StartHandCommand.Command.CanExecute(true);
         EndGameCommand.Command.CanExecute(true);
-        _hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:7582/HandTrackingHub").WithAutomaticReconnect().Build();
+        _hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:8081/HandTrackingHub").WithAutomaticReconnect().Build();
         _hubConnection.StartAsync();
         _hubConnection.SendAsync("JoinTableGroup", Context.TableId);
         Context.TableState.CardMovementDetected += CardMovementDetected;
@@ -52,6 +52,10 @@ public partial class GameManager : Window
         };
         try
         {
+            if (_hubConnection.State != HubConnectionState.Connected)
+            {
+                ResetConnection();
+            }
             _hubConnection.SendAsync("RecordEvent", handTrackingDto).Wait();
         }
         catch (Exception exception)
@@ -60,6 +64,13 @@ public partial class GameManager : Window
         }
     }
 
+    private void ResetConnection()
+    {
+        _hubConnection.StopAsync().Wait();
+        _hubConnection = new HubConnectionBuilder().WithUrl("https://localhost:8081/HandTrackingHub").WithAutomaticReconnect().Build();
+        _hubConnection.StartAsync().Wait();
+        _hubConnection.SendAsync("JoinTableGroup", Context.TableId).Wait();
+    }
     private void DiscardHand()
     {
         Context.TableState.EndHand();

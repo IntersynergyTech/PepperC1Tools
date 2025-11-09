@@ -26,7 +26,7 @@ public partial class GamesList : Window
             var game = new Game()
             {
                 Type = newGameContext.SelectedGameType,
-                Notes = newGameContext.NewGameNotes,
+                Notes = newGameContext.NewGameNotes ?? "You're using it wrong",
                 StartedUtc = DateTime.UtcNow,
             };
 

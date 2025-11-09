@@ -50,16 +50,16 @@ public partial class MainWindow : Window
         TablePositionReaders = App.CardsDbContext.TablePositionReaders.Include(r => r.TablePosition).ToList();
         foreach(var reader in TablePositionReaders)
         {
-            var result = AddTablePosition(res, reader.AntennaId, reader.TablePosition.Type).Result;
+            var result = AddTablePosition(res, reader.TablePositionId, reader.TablePosition.Type).Result;
             Console.WriteLine("Add position result: " + result);
         }
 
-        var pepperUart = new Uart("COM5");
+        var pepperUart = new Uart("COM3");
         var pepperC1 = new PepperC1(pepperUart, readerId: 1);
         
 
         pepperUart.SetPollingTimeout(50);
-        pepperUart.SetPollingAntennas(ActiveAntennasMux.Antenna1 | ActiveAntennasMux.Antenna7 | ActiveAntennasMux.Antenna8);
+        pepperUart.SetPollingAntennas(ActiveAntennasMux.Antenna1 | ActiveAntennasMux.Antenna2 | ActiveAntennasMux.Antenna3 | ActiveAntennasMux.Antenna4 | ActiveAntennasMux.Antenna7 | ActiveAntennasMux.Antenna8);
 
         Reader = new MultiplexReader(pepperC1);
         Reader.EventMarshaller = UiThreadEventMarshaller;
@@ -75,7 +75,7 @@ public partial class MainWindow : Window
 
     private async Task<int> SetupTable()
     {
-        var url = "https://localhost:7582/table";
+        var url = "https://localhost:8081/table";
         var tableData = new TableSetupData("My Table");
         using var client = new HttpClient();
         var response = client.PostAsJsonAsync(url, tableData).Result;
@@ -98,7 +98,7 @@ public partial class MainWindow : Window
 
     private async Task<int> AddTablePosition(int tableId, int positionNumber, TablePositionType type)
     {
-        var url = $"https://localhost:7582/table/{tableId}/positions";
+        var url = $"https://localhost:8081/table/{tableId}/positions";
         var positionData = new { positionNumber = positionNumber, type = type };
         using var client = new HttpClient();
         var response = client.PostAsJsonAsync(url, positionData).Result;
